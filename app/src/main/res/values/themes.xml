@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ToDoApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="supportSeparator">@color/supportLightSeparator</item>
+        <item name="supportOverlay">@color/supportLightOverlay</item>
+
+        <item name="labelPrimary">@color/labelLightPrimary</item>
+        <item name="labelSecondary">@color/labelLightSecondary</item>
+        <item name="labelTertiary">@color/labelLightTertiary</item>
+        <item name="labelDisable">@color/labelLightDisable</item>
+
+        <item name="colorRed">@color/colorLightRed</item>
+        <item name="colorGreen">@color/colorLightGreen</item>
+        <item name="colorBlue">@color/colorLightBlue</item>
+        <item name="colorGrey">@color/colorLightGrey</item>
+        <item name="colorGreyLight">@color/colorLightGreyLight</item>
+        <item name="colorWhite">@color/colorLightWhite</item>
+
+        <item name="backPrimary">@color/backLightPrimary</item>
+        <item name="backSecondary">@color/backLightSecondary</item>
+        <item name="backElevated">@color/backLightElevated</item>
+    </style>
+
+    <style name="Theme.ToDoApp" parent="Base.Theme.ToDoApp" />
+</resources>
