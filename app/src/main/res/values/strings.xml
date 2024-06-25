@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">ToDo App</string>
+    <string name="listTitle">Мои дела</string>
+    <string name="priorityTitle">Важность</string>
+    <string name="newTaskBtn">Новое</string>
+    <string name="doneTaskCounter">Выполнено</string>
+    <string name="close">Закрыть</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    <string name="taskTextHint">Что надо сделать…</string>
+    <string name="priorityHigh">Важно</string>
+    <string name="priorityNormal">Нет</string>
+    <string name="priorityLow">Не важно</string>
+    <string name="taskDeadline">Сделать до</string>
+</resources>

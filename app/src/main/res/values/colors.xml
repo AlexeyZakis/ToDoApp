@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--    Light theme colors-->
+    <color name="supportLightSeparator">#33000000</color>
+    <color name="supportLightOverlay">#0F000000</color>
+
+    <color name="labelLightPrimary">#000000</color>
+    <color name="labelLightSecondary">#999999</color>
+    <color name="labelLightTertiary">#4D4D4D</color>
+    <color name="labelLightDisable">#262626</color>
+
+    <color name="colorLightRed">#FF3B30</color>
+    <color name="colorLightGreen">#34C759</color>
+    <color name="colorLightBlue">#007AFF</color>
+    <color name="colorLightGrey">#8E8E93</color>
+    <color name="colorLightGreyLight">#D1D1D6</color>
+    <color name="colorLightWhite">#FFFFFF</color>
+
+    <color name="backLightPrimary">#F7F6F2</color>
+    <color name="backLightSecondary">#FFFFFF</color>
+    <color name="backLightElevated">#FFFFFF</color>
+
+    <!--    Dark theme colors-->
+    <color name="supportDarkSeparator">#33FFFFFF</color>
+    <color name="supportDarkOverlay">#52000000</color>
+
+    <color name="labelDarkPrimary">#FFFFFF</color>
+    <color name="labelDarkSecondary">#99FFFFFF</color>
+    <color name="labelDarkTertiary">#66FFFFFF</color>
+    <color name="labelDarkDisable">#26FFFFFF</color>
+
+    <color name="colorDarkRed">#FF453A</color>
+    <color name="colorDarkGreen">#32D748</color>
+    <color name="colorDarkBlue">#0A84FF</color>
+    <color name="colorDarkGrey">#8E8E93</color>
+    <color name="colorDarkGreyLight">#48484A</color>
+    <color name="colorDarkWhite">#FFFFFF</color>
+
+    <color name="backDarkPrimary">#161618</color>
+    <color name="backDarkSecondary">#252528</color>
+    <color name="backDarkElevated">#3C3C3F</color>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AppTheme">
+        <attr name="supportSeparator" format="color" />
+        <attr name="supportOverlay" format="color" />
+
+        <attr name="labelPrimary" format="color" />
+        <attr name="labelSecondary" format="color" />
+        <attr name="labelTertiary" format="color" />
+        <attr name="labelDisable" format="color" />
+
+        <attr name="colorRed" format="color" />
+        <attr name="colorGreen" format="color" />
+        <attr name="colorBlue" format="color" />
+        <attr name="colorGrey" format="color" />
+        <attr name="colorGreyLight" format="color" />
+        <attr name="colorWhite" format="color" />
+
+        <attr name="backPrimary" format="color" />
+        <attr name="backSecondary" format="color" />
+        <attr name="backElevated" format="color" />
+    </declare-styleable>
+</resources>
