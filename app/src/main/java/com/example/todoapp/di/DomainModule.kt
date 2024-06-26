@@ -2,9 +2,9 @@ package com.example.todoapp.di
 
 import com.example.todoapp.domain.repository.TodoItemsRepository
 import com.example.todoapp.domain.usecase.AddTodoItemUseCase
+import com.example.todoapp.domain.usecase.ChangeDoneTaskVisibilityUseCase
 import com.example.todoapp.domain.usecase.DeleteTodoItemUseCase
 import com.example.todoapp.domain.usecase.EditTodoItemUseCase
-import com.example.todoapp.domain.usecase.GetAvailableTodoItemIdUseCase
 import com.example.todoapp.domain.usecase.GetItemListUseCase
 import com.example.todoapp.domain.usecase.GetNumberOfDoneTaskUseCase
 import com.example.todoapp.domain.usecase.GetTodoItemUseCase
@@ -20,6 +20,9 @@ class DomainModule {
     fun provideAddTodoItemUseCase(todoItemsRepository: TodoItemsRepository) =
         AddTodoItemUseCase(todoItemsRepository = todoItemsRepository)
     @Provides
+    fun provideChangeDoneTaskVisibilityUseCase(todoItemsRepository: TodoItemsRepository) =
+        ChangeDoneTaskVisibilityUseCase(todoItemsRepository = todoItemsRepository)
+    @Provides
     fun provideDeleteTodoItemUseCase(todoItemsRepository: TodoItemsRepository) =
         DeleteTodoItemUseCase(todoItemsRepository = todoItemsRepository)
     @Provides
@@ -31,9 +34,6 @@ class DomainModule {
     @Provides
     fun provideGetNumberOfDoneTaskUseCase(todoItemsRepository: TodoItemsRepository) =
         GetNumberOfDoneTaskUseCase(todoItemsRepository = todoItemsRepository)
-    @Provides
-    fun provideGetAvailableTodoItemIdUseCase(todoItemsRepository: TodoItemsRepository) =
-        GetAvailableTodoItemIdUseCase(todoItemsRepository = todoItemsRepository)
     @Provides
     fun provideGetTodoItemUseCase(todoItemsRepository: TodoItemsRepository) =
         GetTodoItemUseCase(todoItemsRepository = todoItemsRepository)
