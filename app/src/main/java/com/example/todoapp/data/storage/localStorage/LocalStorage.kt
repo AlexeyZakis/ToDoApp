@@ -44,5 +44,5 @@ class LocalStorage: TaskStorage {
     private val randText: String
         get() = lorem.getWords(1, 10)
     private val randBigText: String
-        get() = lorem.getWords(1, 10)
+        get() = lorem.getParagraphs(1, 10)
 }
