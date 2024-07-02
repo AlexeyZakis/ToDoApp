@@ -1,13 +1,27 @@
 package com.example.todoapp.presentation.functions
 
+import android.icu.util.TimeZone
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 object DateFormat {
-    fun getDateString(date: LocalDate?): String {
+    fun getDateString(date: LocalDate?, locale: Locale = Locale.getDefault()): String {
         date ?: return ""
-        return getDateString(date.dayOfMonth, date.monthValue, date.year)
+        return date.format(
+            DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy", locale)
+        )
     }
-    fun getDateString(day: Int, month: Int, year: Int): String {
-        return String.format("%02d.%02d.%04d", day, month, year)
+    fun dateToLong(date: LocalDate): Long {
+        val startOfDay = date.atStartOfDay(ZoneOffset.UTC)
+        return startOfDay.toInstant().toEpochMilli()
+    }
+    fun longToLocalDate(epochMilli: Long, zoneId: ZoneId = ZoneId.systemDefault()): LocalDate {
+        val instant = Instant.ofEpochMilli(epochMilli)
+        val zonedDateTime = instant.atZone(zoneId)
+        return zonedDateTime.toLocalDate()
     }
 }

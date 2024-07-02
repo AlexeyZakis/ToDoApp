@@ -34,8 +34,10 @@ class TodoItemsRepositoryImpl(taskStorage: TaskStorage): TodoItemsRepository {
 
     override fun deleteTodoItem(todoItemId: String) {
         if (_todoItems.value.contains(todoItemId)) {
-            _todoItems.update { items ->
-                items.filter { it.value.id != todoItemId }
+            _todoItems.update {
+                val updatedValues = todoItems.value.toMutableMap()
+                updatedValues.remove(todoItemId)
+                updatedValues.toMap()
             }
         }
     }

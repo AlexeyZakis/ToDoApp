@@ -12,4 +12,11 @@
     <string name="priorityNormal">Нет</string>
     <string name="priorityLow">Не важно</string>
     <string name="taskDeadline">Сделать до</string>
+    <string name="infoBtnDescription">Инфо</string>
+    <string name="closeBtnDescription">Инфо</string>
+    <string name="hideDoneTaskBtnDescription">Скрыть выполненые</string>
+    <string name="deleteBtnDescription">Удалить</string>
+    <string name="floatingAddActionButtonDescription">Добавить</string>
+    <string name="calendarOk">Ок</string>
+    <string name="calendarCancel">Отмена</string>
 </resources>

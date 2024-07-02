@@ -5,6 +5,7 @@ import com.example.todoapp.domain.usecase.AddTodoItemUseCase
 import com.example.todoapp.domain.usecase.ChangeDoneTaskVisibilityUseCase
 import com.example.todoapp.domain.usecase.DeleteTodoItemUseCase
 import com.example.todoapp.domain.usecase.EditTodoItemUseCase
+import com.example.todoapp.domain.usecase.GetIsDoneTaskHiddenUseCase
 import com.example.todoapp.domain.usecase.GetItemListUseCase
 import com.example.todoapp.domain.usecase.GetNumberOfDoneTaskUseCase
 import com.example.todoapp.domain.usecase.GetTodoItemUseCase
@@ -37,4 +38,7 @@ class DomainModule {
     @Provides
     fun provideGetTodoItemUseCase(todoItemsRepository: TodoItemsRepository) =
         GetTodoItemUseCase(todoItemsRepository = todoItemsRepository)
+    @Provides
+    fun provideGetIsDoneTaskHiddenUseCase(todoItemsRepository: TodoItemsRepository) =
+        GetIsDoneTaskHiddenUseCase(todoItemsRepository = todoItemsRepository)
 }

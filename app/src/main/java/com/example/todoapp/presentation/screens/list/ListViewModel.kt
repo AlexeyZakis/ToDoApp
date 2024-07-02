@@ -1,18 +1,21 @@
 package com.example.todoapp.presentation.screens.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todoapp.domain.models.ItemList
+import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.domain.usecase.ChangeDoneTaskVisibilityUseCase
 import com.example.todoapp.domain.usecase.DeleteTodoItemUseCase
 import com.example.todoapp.domain.usecase.EditTodoItemUseCase
+import com.example.todoapp.domain.usecase.GetIsDoneTaskHiddenUseCase
+import com.example.todoapp.domain.usecase.GetItemListUseCase
 import com.example.todoapp.domain.usecase.GetNumberOfDoneTaskUseCase
-import com.example.todoapp.presentation.constants.Constants
-import com.example.todoapp.presentation.screens.list.action.ListUiAction
+import com.example.todoapp.presentation.screens.list.action.ListScreenAction
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,36 +25,51 @@ class ListViewModel @Inject constructor(
     private val editTodoItemUseCase: EditTodoItemUseCase,
     private val getNumberOfDoneTaskUseCase: GetNumberOfDoneTaskUseCase,
     private val changeDoneTaskVisibilityUseCase: ChangeDoneTaskVisibilityUseCase,
+    getItemListUseCase: GetItemListUseCase,
+    getIsDoneTaskHiddenUseCase: GetIsDoneTaskHiddenUseCase
 ): ViewModel() {
-    private var _todoItems = MutableLiveData<ItemList>()
-    val todoItems: LiveData<ItemList>
-        get() = _todoItems
+    private val _screenState = MutableStateFlow(ListScreenState())
+    val screenState = combine(
+        _screenState,
+        getItemListUseCase.execute(),
+        getIsDoneTaskHiddenUseCase.execute()
+    ) { state, items, hideDoneTask ->
+        state.copy(
+            todoItems = Items((
+                if (hideDoneTask) {
+                    items.values.filter { !it.isDone }
+                }
+                else {
+                    items.values
+                }).toList()
+            ),
+            doneTaskCounter = getNumberOfDoneTaskUseCase.execute(),
+            hideDoneTask = hideDoneTask
+        )
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        ListScreenState()
+    )
 
-    var hideDoneTasks = MutableLiveData<Boolean>().apply {
-        value = Constants.HIDE_DONE_TASK_DEFAULT
-    }
-
-    val doneTaskCounter: Int
-        get() = getNumberOfDoneTaskUseCase.execute()
-
-    fun onUiAction(action: ListUiAction) {
+    fun screenAction(action: ListScreenAction) {
         when (action) {
-            is ListUiAction.UpdateTodoItem -> editTodoItem(action.todoItem)
-            is ListUiAction.RemoveTodoItem -> deleteTodoItem(action.todoItem.id)
-            is ListUiAction.ChangeDoneTaskVisibility -> changeDoneTaskVisibility(action.hideDoneTask)
+            is ListScreenAction.ChangeTodoItemCompletion -> changeTodoItemCompletion(action.todoItem)
+            is ListScreenAction.ChangeDoneTaskVisibility -> changeDoneTaskVisibility(action.hideDoneTask)
+            is ListScreenAction.DeleteTodoItem -> deleteTodoItem(action.todoItem.id)
         }
     }
-    fun changeDoneTaskVisibility(hideDoneTask: Boolean) {
+    private fun changeDoneTaskVisibility(hideDoneTask: Boolean) {
         viewModelScope.launch {
             changeDoneTaskVisibilityUseCase.execute(hideDoneTask)
         }
     }
-    fun deleteTodoItem(todoItemId: String) {
+    private fun deleteTodoItem(todoItemId: String) {
         viewModelScope.launch {
             deleteTodoItemUseCase.execute(todoItemId)
         }
     }
-    fun editTodoItem(todoItem: TodoItem) {
+    private fun changeTodoItemCompletion(todoItem: TodoItem) {
         viewModelScope.launch {
             editTodoItemUseCase.execute(todoItem)
         }

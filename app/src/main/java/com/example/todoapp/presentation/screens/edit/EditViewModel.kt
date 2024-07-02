@@ -1,11 +1,17 @@
 package com.example.todoapp.presentation.screens.edit
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.domain.repository.TodoItemsRepository
+import com.example.todoapp.domain.usecase.AddTodoItemUseCase
+import com.example.todoapp.domain.usecase.DeleteTodoItemUseCase
+import com.example.todoapp.domain.usecase.EditTodoItemUseCase
+import com.example.todoapp.domain.usecase.GetTodoItemUseCase
 import com.example.todoapp.presentation.constants.Mode
-import com.example.todoapp.presentation.screens.edit.action.EditUiAction
+import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
+import com.example.todoapp.presentation.screens.navigation.routes.EditRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,58 +24,73 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
-    private val repository: TodoItemsRepository,
+    private val getTodoItemUseCase: GetTodoItemUseCase,
+    private val addTodoItemUseCase: AddTodoItemUseCase,
+    private val editTodoItemUseCase: EditTodoItemUseCase,
+    private val deleteTodoItemUseCase: DeleteTodoItemUseCase,
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private var todoItem = TodoItem()
 
-    private val _uiState = MutableStateFlow(EditUiState())
-    val uiState = _uiState.asStateFlow()
+    private val _screenState = MutableStateFlow(EditScreenState())
+    val screenState = _screenState.asStateFlow()
 
-    private var screenMode = Mode.EDIT_ITEM
+    private var screenMode = Mode.ADD_ITEM
 
     init {
         viewModelScope.launch {
-            val id = UUID.randomUUID().toString()
-            repository.getTodoItem(id)?.let { item ->
+            val id = savedStateHandle.get<String>(EditRoute.ID) ?: ""
+            getTodoItemUseCase.execute(id)?.let { item ->
                 screenMode = Mode.EDIT_ITEM
                 todoItem = item
-                _uiState.update {
-                    uiState.value.copy(
+                _screenState.update {
+                    screenState.value.copy(
                         text = item.taskText,
                         priority = item.priority,
-                        deadline = item.deadlineDate ?: uiState.value.deadline,
                         hasDeadline = item.deadlineDate != null,
+                        deadline = item.deadlineDate ?: screenState.value.deadline,
+                        mode = Mode.EDIT_ITEM
                     )
                 }
             }
         }
     }
-    fun onUiAction(action: EditUiAction) {
+    fun screenAction(action: EditScreenAction) {
         when (action) {
-            EditUiAction.SaveTask -> onSaveButtonClick()
-            EditUiAction.DeleteTask -> onRemoveButtonClick()
-            is EditUiAction.UpdateText -> _uiState.update {
-                uiState.value.copy(text = action.text)
+            EditScreenAction.SaveTask -> onSaveButtonClick()
+            EditScreenAction.DeleteTask -> onRemoveButtonClick()
+            is EditScreenAction.UpdateText -> _screenState.update {
+                screenState.value.copy(
+                    text = action.text
+                )
             }
-            is EditUiAction.UpdateDeadlineExistence -> _uiState.update {
-                uiState.value.copy(hasDeadline = action.hasDeadline)
+            is EditScreenAction.UpdateDeadlineExistence -> _screenState.update {
+                screenState.value.copy(
+                    hasDeadline = action.hasDeadline
+                )
             }
-            is EditUiAction.UpdatePriority -> _uiState.update {
-                uiState.value.copy(priority = action.priority)
+            is EditScreenAction.UpdatePriority -> _screenState.update {
+                screenState.value.copy(
+                    priority = action.priority
+                )
             }
-            is EditUiAction.UpdateDeadline -> _uiState.update {
-                uiState.value.copy(deadline = action.deadline)
+            is EditScreenAction.UpdateDeadline -> _screenState.update {
+                screenState.value.copy(
+                    deadline = action.deadline
+                )
             }
         }
     }
     private fun onSaveButtonClick() {
-        if (uiState.value.text.isBlank()) return
+        if (screenState.value.text.isBlank()) {
+            return
+        }
 
         todoItem = todoItem.copy(
-            taskText = uiState.value.text,
-            priority = uiState.value.priority,
-            deadlineDate = if (uiState.value.hasDeadline) {
-                uiState.value.deadline
+            taskText = screenState.value.text,
+            priority = screenState.value.priority,
+            deadlineDate = if (screenState.value.hasDeadline) {
+                screenState.value.deadline
             } else {
                 null
             },
@@ -79,10 +100,10 @@ class EditViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (screenMode) {
                 Mode.ADD_ITEM -> {
-                    repository.addTodoItem(todoItem)
+                    addTodoItemUseCase.execute(todoItem)
                 }
                 Mode.EDIT_ITEM -> {
-                    repository.editTodoItem(todoItem)
+                    editTodoItemUseCase.execute(todoItem)
                 }
             }
         }
@@ -90,7 +111,7 @@ class EditViewModel @Inject constructor(
     private fun onRemoveButtonClick() {
         if (screenMode == Mode.EDIT_ITEM) {
             viewModelScope.launch(Dispatchers.IO) {
-                repository.deleteTodoItem(todoItem.id)
+                deleteTodoItemUseCase.execute(todoItem.id)
             }
         }
     }
