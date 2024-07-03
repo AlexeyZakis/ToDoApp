@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.dagger.hilt.android)
     id("kotlin-kapt")
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -80,6 +81,18 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.material3)
 
+    // OkHttp
+    implementation(libs.okhttp)
+
+    // Ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.contentNegotiation)
+    implementation(libs.ktor.json)
+
+    implementation(libs.kotlinx.coroutines.core)
 }
 
 kapt {

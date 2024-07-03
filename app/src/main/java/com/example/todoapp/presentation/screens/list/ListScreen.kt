@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.data.storage.localStorage.LocalStorage
+import com.example.todoapp.data.storage.testStorage.TestStorage
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.presentation.screens.list.action.ListScreenAction
 import com.example.todoapp.presentation.screens.list.components.ListTitle
@@ -24,6 +24,7 @@ import com.example.todoapp.presentation.screens.list.components.ListTodoItemList
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ListScreen(
@@ -107,9 +108,13 @@ fun ListScreen(
 @Preview
 @Composable
 private fun ListScreenLightPreview() {
+    val data: Items
+    runBlocking {
+        data = Items(TestStorage().get().values.toList())
+    }
     AppTheme(theme = MainTheme, darkTheme = false) {
         ListScreen(
-            ListScreenState(Items(LocalStorage().get().values.toList())),
+            ListScreenState(data),
             screenAction = {},
             navigateToNewItem = {},
             navigateToEditItem = {}
@@ -120,9 +125,13 @@ private fun ListScreenLightPreview() {
 @Preview
 @Composable
 private fun ListScreenDarkPreview() {
+    val data: Items
+    runBlocking {
+        data = Items(TestStorage().get().values.toList())
+    }
     AppTheme(theme = MainTheme, darkTheme = true) {
         ListScreen(
-            ListScreenState(Items(LocalStorage().get().values.toList())),
+            ListScreenState(data),
             screenAction = {},
             navigateToNewItem = {},
             navigateToEditItem = {}

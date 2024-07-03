@@ -15,12 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.data.storage.localStorage.LocalStorage
+import com.example.todoapp.data.storage.testStorage.TestStorage
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ListTodoItemList(
@@ -28,8 +29,7 @@ fun ListTodoItemList(
     todoItems: Items,
     onCompletionChange: (TodoItem) -> Unit,
     onItemClick: (TodoItem) -> Unit,
-    // For swipe
-    // onDeleteItem: (TodoItem) -> Unit,
+    onDeleteItem: (TodoItem) -> Unit,
     onAddNewItemClick: () -> Unit,
 ) {
     LazyColumn(
@@ -67,13 +67,17 @@ fun ListTodoItemList(
 @Preview(showBackground = true)
 @Composable
 private fun ListTodoItemListPreview() {
+    val data: Items
+    runBlocking {
+        data = Items(TestStorage().get().values.toList())
+    }
     AppTheme(theme = MainTheme) {
         ListTodoItemList(
-            todoItems = Items(LocalStorage().get().values.toList()),
+            todoItems = data,
             onCompletionChange = {},
             onItemClick = {},
             onAddNewItemClick = {},
-            //onDeleteItem = {},
+            onDeleteItem = {},
             modifier = Modifier,
         )
     }

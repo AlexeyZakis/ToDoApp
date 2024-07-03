@@ -1,16 +1,14 @@
-package com.example.todoapp.data.storage.localStorage
+package com.example.todoapp.data.storage.testStorage
 
 import com.example.todoapp.data.storage.TaskStorage
-import com.example.todoapp.data.storage.models.TaskList
 import com.example.todoapp.domain.models.Priority
 import com.example.todoapp.domain.models.TodoItem
 import com.thedeanda.lorem.Lorem
 import com.thedeanda.lorem.LoremIpsum
 import java.time.LocalDate
-import java.util.UUID
 
-class LocalStorage: TaskStorage {
-    override fun get(): Map<String, TodoItem> {
+class TestStorage: TaskStorage {
+    override suspend fun get(): Map<String, TodoItem> {
         val items = listOf(
             TodoItem(taskText = randText, priority = Priority.LOW, isDone = false, deadlineDate = null),
             TodoItem(taskText = randText, priority = Priority.LOW, isDone = false, deadlineDate = LocalDate.now()),

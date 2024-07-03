@@ -5,15 +5,23 @@ import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.domain.repository.TodoItemsRepository
 import com.example.todoapp.presentation.constants.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
 
 class TodoItemsRepositoryImpl(taskStorage: TaskStorage): TodoItemsRepository {
-    private val _todoItems: MutableStateFlow<Map<String, TodoItem>> =
-        MutableStateFlow(taskStorage.get())
-    override val todoItems = _todoItems.asStateFlow()
+    private var _todoItems: MutableStateFlow<Map<String, TodoItem>>
+    override var todoItems: StateFlow<Map<String, TodoItem>>
     private val _hideDoneTask = MutableStateFlow(Constants.HIDE_DONE_TASK_DEFAULT)
     override val hideDoneTask = _hideDoneTask.asStateFlow()
+
+    init {
+        runBlocking {
+            _todoItems = MutableStateFlow(taskStorage.get())
+            todoItems = _todoItems.asStateFlow()
+        }
+    }
 
     override val doneTaskCounter: Int
         get() = _todoItems.value.values.count { it.isDone }
