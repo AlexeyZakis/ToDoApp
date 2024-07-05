@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,6 +7,21 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.serialization)
 }
+
+// Helper function to read a property from local.properties
+fun getLocalProperty(propertyName: String, project: Project): String {
+    val localPropertiesFile = project.rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        val properties = Properties()
+        properties.load(localPropertiesFile.inputStream())
+        return properties.getProperty(propertyName)
+    } else {
+        throw GradleException("Could not find 'local.properties' file.")
+    }
+}
+
+// Read the API token from local.properties
+val apiToken: String = getLocalProperty("API_TOKEN", project)
 
 android {
     namespace = "com.example.todoapp"
@@ -18,6 +35,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_TOKEN", "\"$apiToken\"")
     }
 
     buildTypes {
@@ -38,6 +57,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
@@ -52,6 +72,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -93,6 +114,8 @@ dependencies {
     implementation(libs.ktor.json)
 
     implementation(libs.kotlinx.coroutines.core)
+
+    implementation(libs.androidx.work.runtime.ktx)
 }
 
 kapt {

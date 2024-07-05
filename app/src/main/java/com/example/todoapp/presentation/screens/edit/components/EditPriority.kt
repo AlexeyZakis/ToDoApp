@@ -13,10 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
-import com.example.todoapp.presentation.constants.Emoji
 import com.example.todoapp.presentation.functions.getPriorityEmoji
 import com.example.todoapp.presentation.functions.priorityToRId
-import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
+import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors

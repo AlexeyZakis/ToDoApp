@@ -1,16 +1,22 @@
 package com.example.todoapp.domain.repository
 
+import com.example.todoapp.data.storage.models.StorageResult
 import com.example.todoapp.domain.models.TodoItem
 import kotlinx.coroutines.flow.StateFlow
 
 interface TodoItemsRepository {
     val todoItems: StateFlow<Map<String, TodoItem>>
     val hideDoneTask: StateFlow<Boolean>
+    val isDataLoadedSuccessfully: StateFlow<Boolean>
+    val hasInternet: StateFlow<Boolean>
     val doneTaskCounter: Int
 
-    fun addTodoItem(todoItem: TodoItem)
     fun changeDoneTaskVisibility(hideDoneTask: Boolean)
-    fun deleteTodoItem(todoItemId: String)
-    fun editTodoItem(todoItem: TodoItem)
-    fun getTodoItem(todoItemId: String): TodoItem?
+    suspend fun addTodoItem(todoItem: TodoItem): StorageResult<Nothing>
+    suspend fun deleteTodoItem(todoItemId: String): StorageResult<Nothing>
+    suspend fun editTodoItem(todoItem: TodoItem): StorageResult<Nothing>
+    suspend fun getTodoItem(todoItemId: String): StorageResult<TodoItem>
+    suspend fun refreshData(): StorageResult<Nothing>
+    fun destroy()
+    fun setConnectedStatus(isConnected: Boolean)
 }

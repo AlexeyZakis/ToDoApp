@@ -6,6 +6,7 @@ import com.example.todoapp.data.network.DTOs.ElementDto
 import com.example.todoapp.data.network.DTOs.ErrorDto
 import com.example.todoapp.data.network.DTOs.ListDto
 import com.example.todoapp.data.network.DTOs.ResponseDto
+import com.example.todoapp.data.network.DTOs.TodoItemDto
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 import io.ktor.http.HttpMethod
@@ -15,10 +16,10 @@ import kotlinx.serialization.json.buildJsonObject
 object Network {
     private var lastKnownRevision = 0
 
-    suspend fun getItemsList(): Map<String, TodoItem> {
+    suspend fun getList(): ListDto? {
         val result = client.safeRequest<ListDto, ErrorDto>(
             method = HttpMethod.Get,
-            path = "list",
+            path = NetworkConstants.PATH,
 //            params = StringValues.build {
 //                append("", "")
 //            }
@@ -26,25 +27,28 @@ object Network {
         return when (result) {
             is NetworkResult.Success -> {
                 onSuccess("getItemsList", result)
-                result.data.list.map {
-                    it.toTodoItem()
-                }.associateBy { it.id }
             }
             is NetworkResult.Error -> {
                 onError("getItemsList", result)
-                mapOf()
             }
         }
     }
-    suspend fun updateList(list: Items) { // TODO : Convert list of items to JSON and put into body (maybe)
+    suspend fun updateList(list: Items): ListDto? {
+        // TODO : Get device ID
+        val body = wrap(
+            NetworkConstants.Wrappers.LIST,
+            json.encodeToString(list.items.map { it.toDto("0") })
+        ).toString()
+        Log.d(NetworkConstants.DEBUG, body)
         val result = client.safeRequest<ListDto, ErrorDto>(
             method = HttpMethod.Patch,
-            path = "list",
+            path = NetworkConstants.PATH,
             headers = mapOf(
                 NetworkConstants.Headers.REVISION to "$lastKnownRevision",
             ),
+            body = body
         )
-        when (result) {
+        return when (result) {
             is NetworkResult.Success -> {
                 onSuccess("updateList", result)
             }
@@ -53,36 +57,37 @@ object Network {
             }
         }
     }
-    suspend fun getItem(id: String): TodoItem? {
+    suspend fun getItem(id: String): ElementDto? {
         val result = client.safeRequest<ElementDto, ErrorDto>(
             method = HttpMethod.Get,
-            path = "list/$id",
+            path = "${NetworkConstants.PATH}/$id",
         )
         return when (result) {
             is NetworkResult.Success -> {
                 onSuccess("getItem", result)
-                result.data.element.toTodoItem()
             }
             is NetworkResult.Error -> {
                 onError("getItem", result)
-                null
             }
         }
     }
-    suspend fun addItem(todoItem: TodoItem) {
+    suspend fun addItem(todoItem: TodoItem): ElementDto? {
         // TODO : Get device ID
-        val body = wrapper(json.encodeToString(todoItem.toDto("0"))).toString()
+        val body = wrap(
+            NetworkConstants.Wrappers.ELEMENT,
+            json.encodeToString(todoItem.toDto("0"))
+        ).toString()
         Log.d(NetworkConstants.DEBUG, body)
 
         val result = client.safeRequest<ElementDto, ErrorDto>(
             method = HttpMethod.Post,
-            path = "list",
+            path = NetworkConstants.PATH,
             headers = mapOf(
                 NetworkConstants.Headers.REVISION to "$lastKnownRevision",
             ),
             body = body
         )
-        when (result) {
+        return when (result) {
             is NetworkResult.Success -> {
                 onSuccess("addItem", result)
             }
@@ -91,20 +96,23 @@ object Network {
             }
         }
     }
-    suspend fun updateItem(todoItem: TodoItem) {
+    suspend fun updateItem(todoItem: TodoItem): ElementDto? {
         // TODO : Get device ID
-        val body = wrapper(json.encodeToString(todoItem.toDto("0"))).toString()
+        val body = wrap(
+            NetworkConstants.Wrappers.ELEMENT,
+            json.encodeToString(todoItem.toDto("0"))
+        ).toString()
         Log.d(NetworkConstants.DEBUG, body)
 
         val result = client.safeRequest<ElementDto, ErrorDto>(
             method = HttpMethod.Put,
-            path = "list/${todoItem.id}",
+            path = "${NetworkConstants.PATH}/${todoItem.id}",
             headers = mapOf(
                 NetworkConstants.Headers.REVISION to "$lastKnownRevision",
             ),
             body = body
         )
-        when (result) {
+        return when (result) {
             is NetworkResult.Success -> {
                 onSuccess("updateItem", result)
             }
@@ -113,15 +121,16 @@ object Network {
             }
         }
     }
-    suspend fun deleteItem(id: String) {
+    suspend fun deleteItem(id: String): ElementDto? {
         val result = client.safeRequest<ElementDto, ErrorDto>(
             method = HttpMethod.Delete,
-            path = "list/$id",
+            path = "${NetworkConstants.PATH}/$id",
             headers = mapOf(
                 NetworkConstants.Headers.REVISION to "$lastKnownRevision",
+                NetworkConstants.Headers.FAILS to "50",
             ),
         )
-        when (result) {
+        return when (result) {
             is NetworkResult.Success -> {
                 onSuccess("deleteItem", result)
             }
@@ -130,8 +139,11 @@ object Network {
             }
         }
     }
+    // For debug
     suspend fun deleteAll() {
-        val items = getItemsList()
+        val items = getList()?.list?.map {
+            it.toTodoItem()
+        }?.associateBy { it.id } ?: mapOf()
         Log.d(NetworkConstants.DEBUG,
             "Response deleteAll\n" +
                 "--------------------------------------------------")
@@ -139,22 +151,24 @@ object Network {
             deleteItem(it.value.id)
         }
     }
-    private fun wrapper(body: String) = buildJsonObject {
-        put("element", json.parseToJsonElement(body))
+    private fun wrap(wrapper: String, body: String) = buildJsonObject {
+        put(wrapper, json.parseToJsonElement(body))
     }
-    private fun onSuccess(name: String, result: NetworkResult.Success<out ResponseDto>) {
+    private fun <T: ResponseDto> onSuccess(name: String, result: NetworkResult.Success<out T>): T {
         lastKnownRevision = result.data.revision
         Log.d(NetworkConstants.DEBUG,
             "Response $name\n" +
                 "${result.data}\n" +
                 "revision: ${result.data.revision}\n" +
                 "--------------------------------------------------")
+        return result.data
     }
-    private fun onError(name: String, result: NetworkResult.Error<out ErrorDto>) {
+    private fun onError(name: String, result: NetworkResult.Error<out ErrorDto>): Nothing? {
         Log.e(NetworkConstants.DEBUG,
             "Response $name\n" +
                 "Error: ${result.message}\n" +
                 "Code: ${result.errorCode}\n" +
                 "--------------------------------------------------")
+        return null
     }
 }

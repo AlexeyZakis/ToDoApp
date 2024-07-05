@@ -1,38 +1,59 @@
 package com.example.todoapp.presentation.screens.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.FabPosition
-import androidx.compose.material.Scaffold
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SnackbarResult
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.data.storage.testStorage.TestStorage
+import com.example.todoapp.data.storage.disposableStorage.DisposableStorage
 import com.example.todoapp.domain.models.Items
-import com.example.todoapp.presentation.screens.list.action.ListScreenAction
 import com.example.todoapp.presentation.screens.list.components.ListTitle
-import com.example.todoapp.presentation.screens.list.components.ListTodoItemList
+import com.example.todoapp.presentation.screens.list.components.PullToRefreshLazyColumn
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
 import kotlinx.coroutines.runBlocking
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import com.example.todoapp.presentation.screens.edit.EditScreenAction
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen(
     screenState: ListScreenState,
-    screenAction: (ListScreenAction) -> Unit,
+    screenAction: (ListScreenAction, () -> Unit) -> Unit,
     navigateToNewItem: () -> Unit,
     navigateToEditItem: (String) -> Unit
 ) {
+    var isRefreshing by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    val context = LocalContext.current
+    val snackBarHostState = remember { SnackbarHostState() }
+
     Column(
         modifier = Modifier
             .background(themeColors.backPrimary)
@@ -42,8 +63,8 @@ fun ListScreen(
             hideDoneTask = screenState.hideDoneTask,
             onVisibilitySwitchClick = { hideDoneTask ->
                 screenAction(
-                    ListScreenAction.ChangeDoneTaskVisibility(hideDoneTask)
-                )
+                    ListScreenAction.OnDoneTaskVisibilityChange(hideDoneTask)
+                ) {}
             },
             modifier = Modifier
                 .padding(
@@ -53,6 +74,16 @@ fun ListScreen(
                 )
         )
         Scaffold(
+            snackbarHost = {
+                SnackbarHost(snackBarHostState) { data ->
+                    Snackbar(
+                        backgroundColor = themeColors.backElevated,
+                        contentColor = themeColors.labelPrimary,
+                        actionColor = themeColors.labelPrimary,
+                        snackbarData = data
+                    )
+                }
+            },
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
@@ -72,36 +103,63 @@ fun ListScreen(
             },
             floatingActionButtonPosition = FabPosition.End,
             content = { paddingValues ->
-                Column {
-                    Modifier
-                        .padding(paddingValues)
-                }
-                ListTodoItemList(
-                    todoItems = screenState.todoItems,
-                    onItemClick = { todoItem ->
-                        navigateToEditItem(todoItem.id)
-                    },
-                    onCompletionChange = { todoItem ->
-                        screenAction(
-                            ListScreenAction.ChangeTodoItemCompletion(
-                                todoItem.copy(
-                                    isDone = !todoItem.isDone
+                Box(Modifier
+                    .background(themeColors.backPrimary)
+                    .padding(paddingValues)
+                ) {
+                    PullToRefreshLazyColumn(
+                        isRefreshing = isRefreshing,
+                        onRefresh = {
+                            scope.launch {
+                                isRefreshing = true
+                                screenAction(ListScreenAction.OnRefreshData) {
+                                    isRefreshing = false
+                                }
+                            }
+                        },
+                        todoItems = screenState.todoItems,
+                        onItemClick = { todoItem ->
+                            navigateToEditItem(todoItem.id)
+                        },
+                        onCompletionChange = { todoItem ->
+                            screenAction(
+                                ListScreenAction.OnTodoItemCompletionChange(
+                                    todoItem.copy(
+                                        isDone = !todoItem.isDone
+                                    )
                                 )
-                            )
-                        )
-                    },
-                    onAddNewItemClick = navigateToNewItem,
-                    onDeleteItem = { todoItem ->
-                        screenAction(
-                            ListScreenAction.DeleteTodoItem(todoItem)
-                        )
-                    },
-                    modifier = Modifier
-                        .background(themeColors.backPrimary)
-                        .padding(16.dp)
-                )
+                            ) {}
+                        },
+                        onAddNewItemClick = navigateToNewItem,
+                        onDeleteItem = { todoItem ->
+                            screenAction(
+                                ListScreenAction.OnTodoItemDelete(todoItem)
+                            ) {}
+                        },
+                        modifier = Modifier
+                            .fillMaxHeight()
+                    )
+                }
             }
         )
+        LaunchedEffect(screenState.isSuccessfulAction) {
+            if (!screenState.isSuccessfulAction) {
+                return@LaunchedEffect
+            }
+            val message = when (screenState.snackBarOnErrorAction) {
+                is ListScreenAction.OnTodoItemCompletionChange -> context.getString(R.string.editError)
+                else -> ""
+            }
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = message,
+                actionLabel = context.getString(R.string.retry),
+                duration = SnackbarDuration.Indefinite
+            )
+            if (snackBarResult == SnackbarResult.ActionPerformed) {
+                screenAction(ListScreenAction.OnErrorSnackBarClick) {}
+                screenAction(screenState.snackBarOnErrorAction) {}
+            }
+        }
     }
 }
 
@@ -110,12 +168,12 @@ fun ListScreen(
 private fun ListScreenLightPreview() {
     val data: Items
     runBlocking {
-        data = Items(TestStorage().get().values.toList())
+        data = Items(DisposableStorage().getList().data?.values?.toList() ?: listOf())
     }
     AppTheme(theme = MainTheme, darkTheme = false) {
         ListScreen(
             ListScreenState(data),
-            screenAction = {},
+            screenAction = { _, _ -> },
             navigateToNewItem = {},
             navigateToEditItem = {}
         )
@@ -127,12 +185,12 @@ private fun ListScreenLightPreview() {
 private fun ListScreenDarkPreview() {
     val data: Items
     runBlocking {
-        data = Items(TestStorage().get().values.toList())
+        data = Items(DisposableStorage().getList().data?.values?.toList()?.subList(1,5) ?: listOf())
     }
     AppTheme(theme = MainTheme, darkTheme = true) {
         ListScreen(
             ListScreenState(data),
-            screenAction = {},
+            screenAction = { _, _ -> },
             navigateToNewItem = {},
             navigateToEditItem = {}
         )

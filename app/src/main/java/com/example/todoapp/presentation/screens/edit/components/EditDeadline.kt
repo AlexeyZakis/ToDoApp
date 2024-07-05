@@ -19,17 +19,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.R
 import com.example.todoapp.presentation.functions.DateFormat
-import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
+import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
-import java.time.LocalDate
 
 @Composable
 fun EditDeadline(
     modifier: Modifier,
     hasDeadline: Boolean,
-    deadlineDate: LocalDate?,
+    deadlineDate: Long?,
     screenAction: (EditScreenAction) -> Unit,
 ) {
     var isDeadlineHidden by remember { mutableStateOf(true) }
@@ -72,20 +71,22 @@ fun EditDeadline(
                 uncheckedTrackColor = themeColors.supportOverlay
             ),
             onCheckedChange = { checked ->
-                screenAction(EditScreenAction.UpdateDeadlineExistence(checked))
+                screenAction(EditScreenAction.OnDeadlineExistenceChange(checked))
                 if(checked) {
                     isDeadlineHidden = false
                 }
                 else {
-                    screenAction(EditScreenAction.UpdateDeadlineExistence(false))
+                    screenAction(EditScreenAction.OnDeadlineExistenceChange(false))
                 }
             }
         )
         EditDeadlinePicker(
             isDatePickerHidden = isDeadlineHidden,
-            deadline = deadlineDate ?: LocalDate.now(),
+            deadline = deadlineDate ?: System.currentTimeMillis(),
             screenAction = screenAction,
-            closeDialog = {isDeadlineHidden = true}
+            closeDialog = {
+                isDeadlineHidden = true
+            }
         )
     }
 }
@@ -95,7 +96,7 @@ fun EditDeadline(
 private fun EditDeadlineNoDeadlinePreview() {
     AppTheme(theme = MainTheme) {
         EditDeadline(
-            deadlineDate = LocalDate.now(),
+            deadlineDate = System.currentTimeMillis(),
             hasDeadline = false,
             screenAction = {},
             modifier = Modifier,
@@ -108,7 +109,7 @@ private fun EditDeadlineNoDeadlinePreview() {
 private fun EditDeadlinePreview() {
     AppTheme(theme = MainTheme) {
         EditDeadline(
-            deadlineDate = LocalDate.now(),
+            deadlineDate = System.currentTimeMillis(),
             hasDeadline = true,
             screenAction = {},
             modifier = Modifier,

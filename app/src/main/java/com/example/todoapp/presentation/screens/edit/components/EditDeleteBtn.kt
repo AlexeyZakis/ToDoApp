@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
+import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
@@ -20,10 +21,12 @@ import com.example.todoapp.presentation.themes.themeColors
 @Composable
 fun EditDeleteBtn(
     enabled: Boolean,
-    onClick: () -> Unit,
+    screenAction: (EditScreenAction) -> Unit,
 ) {
     TextButton(
-        onClick = onClick,
+        onClick = {
+            screenAction(EditScreenAction.OnTaskDelete)
+        },
         enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
             contentColor = themeColors.colorRed,
@@ -47,7 +50,7 @@ private fun EditDeleteBtnPreview() {
     AppTheme(theme = MainTheme) {
         EditDeleteBtn(
             enabled = true,
-            onClick = {},
+            screenAction = {},
         )
     }
 }
@@ -58,7 +61,7 @@ private fun EditDeleteBtnDisablePreview() {
     AppTheme(theme = MainTheme) {
         EditDeleteBtn(
             enabled = false,
-            onClick = {},
+            screenAction = {},
         )
     }
 }

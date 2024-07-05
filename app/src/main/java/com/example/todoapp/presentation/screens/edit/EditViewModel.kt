@@ -1,16 +1,18 @@
 package com.example.todoapp.presentation.screens.edit
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todoapp.data.storage.models.StorageResult
+import com.example.todoapp.data.storage.models.StorageResultStatus
 import com.example.todoapp.domain.models.TodoItem
-import com.example.todoapp.domain.repository.TodoItemsRepository
 import com.example.todoapp.domain.usecase.AddTodoItemUseCase
 import com.example.todoapp.domain.usecase.DeleteTodoItemUseCase
+import com.example.todoapp.domain.usecase.DestroyRepositoryUseCase
 import com.example.todoapp.domain.usecase.EditTodoItemUseCase
 import com.example.todoapp.domain.usecase.GetTodoItemUseCase
 import com.example.todoapp.presentation.constants.Mode
-import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
 import com.example.todoapp.presentation.screens.navigation.routes.EditRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +20,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +28,8 @@ class EditViewModel @Inject constructor(
     private val addTodoItemUseCase: AddTodoItemUseCase,
     private val editTodoItemUseCase: EditTodoItemUseCase,
     private val deleteTodoItemUseCase: DeleteTodoItemUseCase,
-    private val savedStateHandle: SavedStateHandle
+    private val destroyRepositoryUseCase: DestroyRepositoryUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
     private var todoItem = TodoItem()
 
@@ -39,8 +40,11 @@ class EditViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val id = savedStateHandle.get<String>(EditRoute.ID) ?: ""
-            getTodoItemUseCase.execute(id)?.let { item ->
+            val id = savedStateHandle.get<String>(EditRoute.ID)
+            if (id == null || id == "{${EditRoute.ID}}") {
+                return@launch
+            }
+            getTodoItemUseCase(id).data?.let { item ->
                 screenMode = Mode.EDIT_ITEM
                 todoItem = item
                 _screenState.update {
@@ -57,35 +61,43 @@ class EditViewModel @Inject constructor(
     }
     fun screenAction(action: EditScreenAction) {
         when (action) {
-            EditScreenAction.SaveTask -> onSaveButtonClick()
-            EditScreenAction.DeleteTask -> onRemoveButtonClick()
-            is EditScreenAction.UpdateText -> _screenState.update {
-                screenState.value.copy(
-                    text = action.text
-                )
+            EditScreenAction.OnTaskSave -> {
+                saveItem()
             }
-            is EditScreenAction.UpdateDeadlineExistence -> _screenState.update {
+            EditScreenAction.OnTaskDelete -> {
+                deleteItem()
+            }
+            is EditScreenAction.OnTextChange -> {
+                _screenState.update {
+                    screenState.value.copy(
+                        text = action.text
+                    )
+                }
+            }
+            is EditScreenAction.OnDeadlineExistenceChange -> _screenState.update {
                 screenState.value.copy(
                     hasDeadline = action.hasDeadline
                 )
             }
-            is EditScreenAction.UpdatePriority -> _screenState.update {
+            is EditScreenAction.OnPrioritySelect -> _screenState.update {
                 screenState.value.copy(
                     priority = action.priority
                 )
             }
-            is EditScreenAction.UpdateDeadline -> _screenState.update {
+            is EditScreenAction.OnDeadlineSelect -> _screenState.update {
                 screenState.value.copy(
                     deadline = action.deadline
                 )
             }
+            is EditScreenAction.OnErrorSnackBarClick -> _screenState.update {
+                screenState.value.copy(
+                    isSuccessfulAction = !screenState.value.isSuccessfulAction
+                )
+            }
+            else -> {}
         }
     }
-    private fun onSaveButtonClick() {
-        if (screenState.value.text.isBlank()) {
-            return
-        }
-
+    private fun saveItem() {
         todoItem = todoItem.copy(
             taskText = screenState.value.text,
             priority = screenState.value.priority,
@@ -94,25 +106,59 @@ class EditViewModel @Inject constructor(
             } else {
                 null
             },
-            modificationDate = LocalDate.now(),
+            modificationDate = System.currentTimeMillis(),
         )
 
         viewModelScope.launch(Dispatchers.IO) {
-            when (screenMode) {
+            val result = when (screenMode) {
                 Mode.ADD_ITEM -> {
-                    addTodoItemUseCase.execute(todoItem)
+                    addTodoItemUseCase(todoItem)
                 }
                 Mode.EDIT_ITEM -> {
-                    editTodoItemUseCase.execute(todoItem)
+                    editTodoItemUseCase(todoItem)
                 }
+            }
+            updateSnackBarData(
+                result = result,
+                action = EditScreenAction.OnTaskSave,
+                isLeaving = true
+            )
+        }
+    }
+    private fun deleteItem() {
+        if (screenMode == Mode.EDIT_ITEM) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val result = deleteTodoItemUseCase(todoItem.id)
+                updateSnackBarData(
+                    result = result,
+                    action = EditScreenAction.OnTaskDelete,
+                    isLeaving = true
+                )
             }
         }
     }
-    private fun onRemoveButtonClick() {
-        if (screenMode == Mode.EDIT_ITEM) {
-            viewModelScope.launch(Dispatchers.IO) {
-                deleteTodoItemUseCase.execute(todoItem.id)
+    private fun <T>updateSnackBarData(result: StorageResult<T>, action: EditScreenAction, isLeaving: Boolean = false) {
+        if (result.status != StorageResultStatus.SUCCESS) {
+            _screenState.update {
+                screenState.value.copy(
+                    isSuccessfulAction = true,
+                    snackBarOnErrorAction = action,
+                    isLeaving = false,
+                )
             }
         }
+        else {
+            _screenState.update {
+                screenState.value.copy(
+                    isSuccessfulAction = false,
+                    snackBarOnErrorAction = EditScreenAction.Nothing,
+                    isLeaving = isLeaving
+                )
+            }
+        }
+    }
+    override fun onCleared() {
+        super.onCleared()
+        destroyRepositoryUseCase()
     }
 }

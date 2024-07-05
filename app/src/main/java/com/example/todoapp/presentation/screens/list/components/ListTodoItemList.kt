@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.data.storage.testStorage.TestStorage
+import com.example.todoapp.data.storage.disposableStorage.DisposableStorage
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.presentation.themes.AppTheme
@@ -27,29 +29,24 @@ import kotlinx.coroutines.runBlocking
 fun ListTodoItemList(
     modifier: Modifier,
     todoItems: Items,
+    lazyListState: LazyListState,
     onCompletionChange: (TodoItem) -> Unit,
     onItemClick: (TodoItem) -> Unit,
     onDeleteItem: (TodoItem) -> Unit,
     onAddNewItemClick: () -> Unit,
 ) {
     LazyColumn(
+        state = lazyListState,
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(themeColors.backSecondary)
     ) {
         items(todoItems.items, key = { it.id }) { todoItem ->
-            // TODO : Fix item fade bad
-//            SwipeLazyColumn(
-//                item = todoItem,
-//                onSwipeEndToStart = { onDeleteItem(todoItem) },
-//                onSwipeStartToEnd = { onCompletionChange(todoItem) }
-//            ) {
                 ListTodoItem(
                     todoItem = todoItem,
                     onCheckboxClick = { onCompletionChange(todoItem) },
                     onItemClick = { onItemClick(todoItem) }
                 )
-//            }
         }
         item {
             Text(
@@ -69,10 +66,11 @@ fun ListTodoItemList(
 private fun ListTodoItemListPreview() {
     val data: Items
     runBlocking {
-        data = Items(TestStorage().get().values.toList())
+        data = Items(DisposableStorage().getList().data?.values?.toList() ?: listOf())
     }
     AppTheme(theme = MainTheme) {
         ListTodoItemList(
+            lazyListState = rememberLazyListState(),
             todoItems = data,
             onCompletionChange = {},
             onItemClick = {},

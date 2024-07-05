@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
+import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
@@ -43,8 +43,7 @@ fun EditTopBar(
         Spacer(modifier = Modifier.weight(1f))
         TextButton(
             onClick = {
-                screenAction(EditScreenAction.SaveTask)
-                navigateBack()
+                screenAction(EditScreenAction.OnTaskSave)
           },
             colors = ButtonDefaults.textButtonColors(
                 contentColor = themeColors.colorBlue,

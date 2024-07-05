@@ -2,6 +2,7 @@ package com.example.todoapp.presentation.functions
 
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
+import com.example.todoapp.presentation.constants.Constants
 import com.example.todoapp.presentation.constants.Emoji
 
 fun priorityToRId(priority: Priority): Int {
@@ -13,7 +14,7 @@ fun priorityToRId(priority: Priority): Int {
 }
 
 fun getPriorityEmoji(priority: Priority) = when(priority) {
-    Priority.HIGH -> Emoji.IMPORTANT_SIGN
-    Priority.LOW -> Emoji.ANCHOR
+    Priority.HIGH -> Constants.CRITICAL_PRIORITY_TASK_EMOJI
+    Priority.LOW -> Constants.LOW_PRIORITY_TASK_EMOJI
     else -> ""
 }

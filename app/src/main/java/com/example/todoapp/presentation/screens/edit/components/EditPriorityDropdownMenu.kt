@@ -1,14 +1,12 @@
 package com.example.todoapp.presentation.screens.edit.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.todoapp.domain.models.Priority
-import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
+import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
@@ -30,7 +28,7 @@ fun PriorityDropdownMenu(
                 isSelected = lastPriority == priority,
                 priority = priority,
                 onClick = {
-                    screenAction(EditScreenAction.UpdatePriority(priority))
+                    screenAction(EditScreenAction.OnPrioritySelect(priority))
                     onDismiss()
                 },
             )

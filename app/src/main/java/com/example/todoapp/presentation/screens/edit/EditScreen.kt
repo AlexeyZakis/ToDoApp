@@ -8,13 +8,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Snackbar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarResult
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
-import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
 import com.example.todoapp.presentation.screens.edit.components.EditDeadline
 import com.example.todoapp.presentation.screens.edit.components.EditDeleteBtn
 import com.example.todoapp.presentation.screens.edit.components.EditDivider
@@ -24,7 +32,6 @@ import com.example.todoapp.presentation.screens.edit.components.EditPriority
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
-import java.time.LocalDate
 
 @Composable
 fun EditScreen(
@@ -32,7 +39,19 @@ fun EditScreen(
     screenAction: (EditScreenAction) -> Unit,
     navigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
+    val snackBarHostState = remember { SnackbarHostState() }
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackBarHostState) { data ->
+                Snackbar(
+                    backgroundColor = themeColors.backElevated,
+                    contentColor = themeColors.labelPrimary,
+                    actionColor = themeColors.labelPrimary,
+                    snackbarData = data
+                )
+            }
+       },
         topBar = {
             EditTopBar(
                 screenAction = screenAction,
@@ -48,7 +67,6 @@ fun EditScreen(
                 .padding(paddingValues)
                 .verticalScroll(scrollState)
         ) {
-
             EditTaskText(
                 text = screenState.text,
                 screenAction = screenAction,
@@ -70,12 +88,34 @@ fun EditScreen(
             EditDivider(padding = PaddingValues())
             EditDeleteBtn(
                 enabled = screenState.text.isNotEmpty(),
-                onClick = {
-                    screenAction(EditScreenAction.DeleteTask)
-                    navigateBack()
-                },
+                screenAction = screenAction,
             )
         }
+    }
+    LaunchedEffect(screenState.isSuccessfulAction) {
+        if (!screenState.isSuccessfulAction) {
+            return@LaunchedEffect
+        }
+        val message = when (screenState.snackBarOnErrorAction) {
+            EditScreenAction.OnTaskSave -> context.getString(R.string.saveError)
+            EditScreenAction.OnTaskDelete -> context.getString(R.string.deleteError)
+            else -> ""
+        }
+        val snackBarResult = snackBarHostState.showSnackbar(
+            message = message,
+            actionLabel = context.getString(R.string.retry),
+            duration = SnackbarDuration.Indefinite
+        )
+        if (snackBarResult == SnackbarResult.ActionPerformed) {
+            screenAction(EditScreenAction.OnErrorSnackBarClick)
+            screenAction(screenState.snackBarOnErrorAction)
+        }
+    }
+    LaunchedEffect(screenState.isLeaving) {
+        if (!screenState.isLeaving) {
+            return@LaunchedEffect
+        }
+        navigateBack()
     }
 }
 
@@ -110,7 +150,7 @@ private fun EditScreenDarkWithDeadlinePreview() {
         EditScreen(
             screenState = EditScreenState(
                 hasDeadline = true,
-                deadline = LocalDate.now()
+                deadline = System.currentTimeMillis()
             ),
             screenAction = {},
             navigateBack = {}

@@ -6,4 +6,8 @@ data class ListScreenState(
     val todoItems: Items = Items(),
     val doneTaskCounter: Int = 0,
     val hideDoneTask: Boolean = false,
+    val isDataLoadedSuccessfully: Boolean = false,
+    val isSuccessfulAction: Boolean = false,
+    val snackBarOnErrorAction: ListScreenAction = ListScreenAction.Nothing,
+    val hasInternet: Boolean = false,
 )
