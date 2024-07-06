@@ -2,7 +2,6 @@ package com.example.todoapp.data.repository
 
 import com.example.todoapp.data.storage.TaskStorage
 import com.example.todoapp.data.storage.models.StorageResult
-import com.example.todoapp.data.storage.models.StorageResultStatus
 import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.domain.repository.TodoItemsRepository
 import com.example.todoapp.presentation.constants.Constants
@@ -15,9 +14,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * Responsible for querying and manipulating data from the underlying data source
+ **/
 class TodoItemsRepositoryImpl(
     private val taskStorage: TaskStorage
-): TodoItemsRepository {
+) : TodoItemsRepository {
     private val _todoItems: MutableStateFlow<Map<String, TodoItem>> = MutableStateFlow(emptyMap())
     override val todoItems = _todoItems.asStateFlow()
 

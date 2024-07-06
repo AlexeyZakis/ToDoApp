@@ -1,6 +1,6 @@
 package com.example.todoapp.data.network
 
-import com.example.todoapp.data.network.Constants.NetworkConstants
+import com.example.todoapp.data.network.constants.NetworkConstants
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
@@ -9,17 +9,17 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import okhttp3.CertificatePinner
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 val client by lazy {
     HttpClient(OkHttp) {
         engine {
             preconfigured = okHttpClient
-            threadsCount = 8
+            threadsCount = NetworkConstants.HttpClientSettings.THREADS_COUNT
         }
         followRedirects = false
 
@@ -30,9 +30,9 @@ val client by lazy {
             json(json)
         }
         install(HttpTimeout) {
-            connectTimeoutMillis = 10_000L
-            requestTimeoutMillis = 10_000L
-            socketTimeoutMillis = 10_000L
+            connectTimeoutMillis = NetworkConstants.HttpClientSettings.CONNECT_TIMEOUT_MILLIS
+            requestTimeoutMillis = NetworkConstants.HttpClientSettings.REQUEST_TIMEOUT_MILLIS
+            socketTimeoutMillis = NetworkConstants.HttpClientSettings.SOCKET_TIMEOUT_MILLIS
         }
     }
 }
@@ -40,11 +40,6 @@ val client by lazy {
 val okHttpClient = OkHttpClient.Builder()
     .addInterceptor(AuthInterceptor())
     .hostnameVerifier { _, _ -> true }
-//    .certificatePinner(
-//        CertificatePinner.Builder()
-//            .add(NetworkConstants.HOST, NetworkConstants.HOST_SHA)
-//            .build()
-//    )
     .protocols(listOf(Protocol.HTTP_2, Protocol.HTTP_1_1))
     .connectionPool(
         ConnectionPool(
@@ -53,9 +48,9 @@ val okHttpClient = OkHttpClient.Builder()
             timeUnit = TimeUnit.MINUTES
         )
     )
-    .connectTimeout(30, TimeUnit.SECONDS)
-    .readTimeout(30, TimeUnit.SECONDS)
-    .writeTimeout(30, TimeUnit.SECONDS)
+    .connectTimeout(NetworkConstants.HttpClientSettings.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+    .readTimeout(NetworkConstants.HttpClientSettings.READ_TIMEOUT, TimeUnit.SECONDS)
+    .writeTimeout(NetworkConstants.HttpClientSettings.WRITE_TIMEOUT, TimeUnit.SECONDS)
     .build()
 
 val json by lazy {
@@ -64,3 +59,5 @@ val json by lazy {
         ignoreUnknownKeys = true
     }
 }
+
+val deviceId = UUID.randomUUID().toString()

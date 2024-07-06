@@ -2,6 +2,9 @@ package com.example.todoapp.presentation.themes
 
 import androidx.compose.ui.graphics.Color
 
+/**
+ * Project theme
+ **/
 abstract class Theme {
     abstract val lightSupportSeparator: Color
     abstract val lightSupportOverlay: Color

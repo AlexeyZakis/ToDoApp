@@ -48,7 +48,6 @@ fun EditTaskText(
             }
             textField.invoke()
         }
-
     }
 }
 

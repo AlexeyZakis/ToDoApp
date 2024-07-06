@@ -3,6 +3,9 @@ package com.example.todoapp.presentation.themes
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
+/**
+ * Project color names
+ **/
 data class ColorNames(
     val supportSeparator: Color,
     val supportOverlay: Color,

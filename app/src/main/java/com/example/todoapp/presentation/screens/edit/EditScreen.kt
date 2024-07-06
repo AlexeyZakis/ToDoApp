@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Snackbar
-import androidx.compose.material3.Scaffold
 import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarResult
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SnackbarResult
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -26,9 +26,9 @@ import com.example.todoapp.domain.models.Priority
 import com.example.todoapp.presentation.screens.edit.components.EditDeadline
 import com.example.todoapp.presentation.screens.edit.components.EditDeleteBtn
 import com.example.todoapp.presentation.screens.edit.components.EditDivider
+import com.example.todoapp.presentation.screens.edit.components.EditPriority
 import com.example.todoapp.presentation.screens.edit.components.EditTaskText
 import com.example.todoapp.presentation.screens.edit.components.EditTopBar
-import com.example.todoapp.presentation.screens.edit.components.EditPriority
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
@@ -51,7 +51,7 @@ fun EditScreen(
                     snackbarData = data
                 )
             }
-       },
+        },
         topBar = {
             EditTopBar(
                 screenAction = screenAction,

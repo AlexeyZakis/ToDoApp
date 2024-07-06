@@ -8,11 +8,11 @@ import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.domain.usecase.ChangeDoneTaskVisibilityUseCase
 import com.example.todoapp.domain.usecase.CheckHasInternetUseCase
+import com.example.todoapp.domain.usecase.CheckIsDoneTaskHiddenUseCase
 import com.example.todoapp.domain.usecase.DeleteTodoItemUseCase
 import com.example.todoapp.domain.usecase.DestroyRepositoryUseCase
 import com.example.todoapp.domain.usecase.EditTodoItemUseCase
 import com.example.todoapp.domain.usecase.GetIsDataLoadedSuccessfullyUseCase
-import com.example.todoapp.domain.usecase.CheckIsDoneTaskHiddenUseCase
 import com.example.todoapp.domain.usecase.GetItemListUseCase
 import com.example.todoapp.domain.usecase.GetNumberOfDoneTaskUseCase
 import com.example.todoapp.domain.usecase.RefreshDataUseCase
@@ -40,7 +40,7 @@ class ListViewModel @Inject constructor(
     private val destroyRepositoryUseCase: DestroyRepositoryUseCase,
     private val refreshDataUseCase: RefreshDataUseCase,
     private val checkHasInternetUseCase: CheckHasInternetUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _screenState = MutableStateFlow(ListScreenState())
     private val isConnectedStateFlow: StateFlow<Boolean> = checkHasInternetUseCase()
 
@@ -51,13 +51,14 @@ class ListViewModel @Inject constructor(
         getIsDataLoadedSuccessfullyUseCase(),
     ) { state, items, hideDoneTask, isDataLoadedSuccessfully ->
         state.copy(
-            todoItems = Items((
+            todoItems = Items(
+                (
                     if (hideDoneTask) {
                         items.values.filter { !it.isDone }
-                    }
-                    else {
+                    } else {
                         items.values
-                    }).toList()
+                    }
+                    ).toList()
             ),
             doneTaskCounter = getNumberOfDoneTaskUseCase(),
             hideDoneTask = hideDoneTask,
@@ -131,8 +132,7 @@ class ListViewModel @Inject constructor(
                     snackBarOnErrorAction = action,
                 )
             }
-        }
-        else {
+        } else {
             _screenState.update {
                 screenState.value.copy(
                     isSuccessfulAction = false,

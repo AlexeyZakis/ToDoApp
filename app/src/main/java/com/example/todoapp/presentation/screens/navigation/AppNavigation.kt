@@ -3,16 +3,16 @@ package com.example.todoapp.presentation.screens.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.todoapp.presentation.screens.edit.EditScreen
 import com.example.todoapp.presentation.screens.edit.EditViewModel
-import com.example.todoapp.presentation.screens.navigation.routes.ListRoute
 import com.example.todoapp.presentation.screens.list.ListScreen
 import com.example.todoapp.presentation.screens.list.ListViewModel
 import com.example.todoapp.presentation.screens.navigation.routes.EditRoute
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.todoapp.presentation.screens.navigation.routes.ListRoute
 
 @Composable
 fun AppNavigation() {

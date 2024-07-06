@@ -1,18 +1,21 @@
 package com.example.todoapp.data.network
 
 import android.util.Log
-import com.example.todoapp.data.network.Constants.NetworkConstants
-import com.example.todoapp.data.network.DTOs.ElementDto
-import com.example.todoapp.data.network.DTOs.ErrorDto
-import com.example.todoapp.data.network.DTOs.ListDto
-import com.example.todoapp.data.network.DTOs.ResponseDto
-import com.example.todoapp.data.network.DTOs.TodoItemDto
+import com.example.todoapp.data.network.constants.NetworkConstants
+import com.example.todoapp.data.network.dtos.ElementDto
+import com.example.todoapp.data.network.dtos.ErrorDto
+import com.example.todoapp.data.network.dtos.ListDto
+import com.example.todoapp.data.network.dtos.ResponseDto
+import com.example.todoapp.data.network.models.NetworkResult
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.buildJsonObject
 
+/**
+ * Network request API
+ **/
 object Network {
     private var lastKnownRevision = 0
 
@@ -20,9 +23,6 @@ object Network {
         val result = client.safeRequest<ListDto, ErrorDto>(
             method = HttpMethod.Get,
             path = NetworkConstants.PATH,
-//            params = StringValues.build {
-//                append("", "")
-//            }
         )
         return when (result) {
             is NetworkResult.Success -> {
@@ -34,10 +34,9 @@ object Network {
         }
     }
     suspend fun updateList(list: Items): ListDto? {
-        // TODO : Get device ID
         val body = wrap(
             NetworkConstants.Wrappers.LIST,
-            json.encodeToString(list.items.map { it.toDto("0") })
+            json.encodeToString(list.items.map { it.toDto(deviceId) })
         ).toString()
         Log.d(NetworkConstants.DEBUG, body)
         val result = client.safeRequest<ListDto, ErrorDto>(
@@ -72,10 +71,9 @@ object Network {
         }
     }
     suspend fun addItem(todoItem: TodoItem): ElementDto? {
-        // TODO : Get device ID
         val body = wrap(
             NetworkConstants.Wrappers.ELEMENT,
-            json.encodeToString(todoItem.toDto("0"))
+            json.encodeToString(todoItem.toDto(deviceId))
         ).toString()
         Log.d(NetworkConstants.DEBUG, body)
 
@@ -97,10 +95,9 @@ object Network {
         }
     }
     suspend fun updateItem(todoItem: TodoItem): ElementDto? {
-        // TODO : Get device ID
         val body = wrap(
             NetworkConstants.Wrappers.ELEMENT,
-            json.encodeToString(todoItem.toDto("0"))
+            json.encodeToString(todoItem.toDto(deviceId))
         ).toString()
         Log.d(NetworkConstants.DEBUG, body)
 
@@ -139,36 +136,28 @@ object Network {
             }
         }
     }
-    // For debug
-    suspend fun deleteAll() {
-        val items = getList()?.list?.map {
-            it.toTodoItem()
-        }?.associateBy { it.id } ?: mapOf()
-        Log.d(NetworkConstants.DEBUG,
-            "Response deleteAll\n" +
-                "--------------------------------------------------")
-        items.forEach {
-            deleteItem(it.value.id)
-        }
-    }
     private fun wrap(wrapper: String, body: String) = buildJsonObject {
         put(wrapper, json.parseToJsonElement(body))
     }
-    private fun <T: ResponseDto> onSuccess(name: String, result: NetworkResult.Success<out T>): T {
+    private fun <T : ResponseDto> onSuccess(name: String, result: NetworkResult.Success<out T>): T {
         lastKnownRevision = result.data.revision
-        Log.d(NetworkConstants.DEBUG,
+        Log.d(
+            NetworkConstants.DEBUG,
             "Response $name\n" +
                 "${result.data}\n" +
                 "revision: ${result.data.revision}\n" +
-                "--------------------------------------------------")
+                "--------------------------------------------------"
+        )
         return result.data
     }
     private fun onError(name: String, result: NetworkResult.Error<out ErrorDto>): Nothing? {
-        Log.e(NetworkConstants.DEBUG,
+        Log.e(
+            NetworkConstants.DEBUG,
             "Response $name\n" +
                 "Error: ${result.message}\n" +
                 "Code: ${result.errorCode}\n" +
-                "--------------------------------------------------")
+                "--------------------------------------------------"
+        )
         return null
     }
 }

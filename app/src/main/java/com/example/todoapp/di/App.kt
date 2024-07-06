@@ -25,7 +25,7 @@ class App : Application(), Configuration.Provider {
 
 class UpdateDataWorkerFactory @Inject constructor(
     private val api: TaskStorage
-): WorkerFactory() {
+) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,

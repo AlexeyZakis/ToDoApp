@@ -3,6 +3,9 @@ package com.example.todoapp.presentation.screens.edit
 import com.example.todoapp.domain.models.Priority
 import com.example.todoapp.presentation.constants.Mode
 
+/**
+ * Edit task screen state
+ **/
 data class EditScreenState(
     val text: String = "",
     val priority: Priority = Priority.NORMAL,

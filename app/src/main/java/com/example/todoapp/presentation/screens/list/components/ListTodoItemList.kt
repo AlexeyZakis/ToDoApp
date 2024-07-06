@@ -42,11 +42,11 @@ fun ListTodoItemList(
             .background(themeColors.backSecondary)
     ) {
         items(todoItems.items, key = { it.id }) { todoItem ->
-                ListTodoItem(
-                    todoItem = todoItem,
-                    onCheckboxClick = { onCompletionChange(todoItem) },
-                    onItemClick = { onItemClick(todoItem) }
-                )
+            ListTodoItem(
+                todoItem = todoItem,
+                onCheckboxClick = { onCompletionChange(todoItem) },
+                onItemClick = { onItemClick(todoItem) }
+            )
         }
         item {
             Text(

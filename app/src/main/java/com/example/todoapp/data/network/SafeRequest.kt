@@ -1,8 +1,9 @@
 package com.example.todoapp.data.network
 
 import android.util.Log
-import com.example.todoapp.data.network.Constants.NetworkConstants
-import com.example.todoapp.data.network.Constants.NetworkErrorCode
+import com.example.todoapp.data.network.constants.NetworkConstants
+import com.example.todoapp.data.network.models.NetworkErrorCode
+import com.example.todoapp.data.network.models.NetworkResult
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ServerResponseException
@@ -48,49 +49,38 @@ suspend inline fun <reified T, reified E>HttpClient.safeRequest(
     Log.i(NetworkConstants.DEBUG, "Request\n$response\n${response.bodyAsText()}")
     if (response.status.isSuccess()) {
         NetworkResult.Success(data = response.body<T>())
-    }
-    else {
+    } else {
         NetworkResult.Error(
             errorCode = response.status.value,
             message = response.status.description,
             errorData = response.body<E>()
         )
     }
-}
-catch (e: SerializationException) {
-    e.printStackTrace()
+} catch (e: SerializationException) {
     NetworkResult.Error(
         errorCode = NetworkErrorCode.Serialization.value,
         message = e.message ?: "Serialization",
         errorData = null
     )
-}
-catch (e: ServerResponseException) {
-    e.printStackTrace()
+} catch (e: ServerResponseException) {
     NetworkResult.Error(
         errorCode = NetworkErrorCode.ServerResponse.value,
         message = e.message,
         errorData = null
     )
-}
-catch (e: UnknownHostException) {
-    e.printStackTrace()
+} catch (e: UnknownHostException) {
     NetworkResult.Error(
         errorCode = NetworkErrorCode.Internet.value,
         message = e.message ?: "No internet",
         errorData = null
     )
-}
-catch (e: IOException) {
-    e.printStackTrace()
+} catch (e: IOException) {
     NetworkResult.Error(
         errorCode = NetworkErrorCode.IO.value,
         message = e.message ?: "IO",
         errorData = null
     )
-}
-catch (e: Exception) {
-    e.printStackTrace()
+} catch (e: Exception) {
     NetworkResult.Error(
         errorCode = NetworkErrorCode.Unknown.value,
         message = e.message ?: "Unknown error",

@@ -16,6 +16,7 @@ class DataModule {
     @Provides
     @Singleton
     fun provideTaskStorage(): TaskStorage = NetworkStorage()
+
     @Provides
     @Singleton
     fun provideTodoItemsRepository(taskStorage: TaskStorage): TodoItemsRepository =

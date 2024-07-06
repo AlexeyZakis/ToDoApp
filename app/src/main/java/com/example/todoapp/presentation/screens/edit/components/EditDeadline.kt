@@ -18,11 +18,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.R
-import com.example.todoapp.presentation.functions.DateFormat
 import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
+import com.example.todoapp.presentation.utils.DateFormat
 
 @Composable
 fun EditDeadline(
@@ -39,8 +39,7 @@ fun EditDeadline(
             modifier.clickable {
                 isDeadlineHidden = false
             }
-        }
-        else {
+        } else {
             modifier
         }
     ) {
@@ -52,10 +51,10 @@ fun EditDeadline(
             Text(
                 text = DateFormat.getDateString(deadlineDate),
                 color = themeColors.colorBlue,
-                modifier = Modifier.alpha( if(hasDeadline) {
+                modifier = Modifier.alpha(
+                    if (hasDeadline) {
                         1f
-                    }
-                    else {
+                    } else {
                         0f
                     }
                 ),
@@ -72,10 +71,9 @@ fun EditDeadline(
             ),
             onCheckedChange = { checked ->
                 screenAction(EditScreenAction.OnDeadlineExistenceChange(checked))
-                if(checked) {
+                if (checked) {
                     isDeadlineHidden = false
-                }
-                else {
+                } else {
                     screenAction(EditScreenAction.OnDeadlineExistenceChange(false))
                 }
             }

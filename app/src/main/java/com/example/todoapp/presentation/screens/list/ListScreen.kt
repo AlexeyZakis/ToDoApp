@@ -11,18 +11,21 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,12 +37,8 @@ import com.example.todoapp.presentation.screens.list.components.PullToRefreshLaz
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
-import kotlinx.coroutines.runBlocking
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ListScreen(
@@ -103,9 +102,10 @@ fun ListScreen(
             },
             floatingActionButtonPosition = FabPosition.End,
             content = { paddingValues ->
-                Box(Modifier
-                    .background(themeColors.backPrimary)
-                    .padding(paddingValues)
+                Box(
+                    Modifier
+                        .background(themeColors.backPrimary)
+                        .padding(paddingValues)
                 ) {
                     PullToRefreshLazyColumn(
                         isRefreshing = isRefreshing,
@@ -185,7 +185,7 @@ private fun ListScreenLightPreview() {
 private fun ListScreenDarkPreview() {
     val data: Items
     runBlocking {
-        data = Items(DisposableStorage().getList().data?.values?.toList()?.subList(1,5) ?: listOf())
+        data = Items(DisposableStorage().getList().data?.values?.toList()?.subList(1, 5) ?: listOf())
     }
     AppTheme(theme = MainTheme, darkTheme = true) {
         ListScreen(

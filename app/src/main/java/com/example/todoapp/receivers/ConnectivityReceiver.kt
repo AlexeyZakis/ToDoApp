@@ -9,6 +9,9 @@ import android.util.Log
 import com.example.todoapp.domain.repository.TodoItemsRepository
 import com.example.todoapp.presentation.constants.Constants
 
+/**
+ * Checks internet availability
+ **/
 class ConnectivityReceiver(
     private val todoItemsRepository: TodoItemsRepository
 ) : BroadcastReceiver() {
@@ -17,8 +20,7 @@ class ConnectivityReceiver(
         if (context != null) {
             if (isConnected(context)) {
                 Log.d(Constants.CONNECTIVITY_RECEIVER_DEBUG, "Connected to Internet")
-            }
-            else {
+            } else {
                 Log.d(Constants.CONNECTIVITY_RECEIVER_DEBUG, "Disconnected from Internet")
             }
             todoItemsRepository.setConnectedStatus(isConnected(context))

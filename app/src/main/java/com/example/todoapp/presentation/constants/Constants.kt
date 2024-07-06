@@ -13,4 +13,5 @@ object Constants {
 
     const val UPDATE_DATA_WORK_DEBUG = "UpdateDataWorkDebug"
     const val CONNECTIVITY_RECEIVER_DEBUG = "ConnectivityReceiverDebug"
+    const val YANDEX_AUTH_DEBUG = "YandexAuthDebug"
 }

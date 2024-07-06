@@ -5,12 +5,14 @@ import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.todoapp.data.network.Constants.NetworkConstants
 import com.example.todoapp.data.storage.TaskStorage
 import com.example.todoapp.presentation.constants.Constants
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
+/**
+ * Update data in background
+ **/
 @HiltWorker
 class UpdateDataWorker @AssistedInject constructor(
     @Assisted private val api: TaskStorage,
@@ -24,8 +26,7 @@ class UpdateDataWorker @AssistedInject constructor(
             if (result.status.isSuccess()) {
                 Log.d(Constants.UPDATE_DATA_WORK_DEBUG, "Update data background work: Success")
                 Result.success()
-            }
-            else {
+            } else {
                 Log.w(Constants.UPDATE_DATA_WORK_DEBUG, "Update data background work: Retrying")
                 Result.retry()
             }

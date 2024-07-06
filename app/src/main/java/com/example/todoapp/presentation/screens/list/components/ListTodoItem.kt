@@ -12,25 +12,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
 import com.example.todoapp.domain.models.TodoItem
-import com.example.todoapp.presentation.functions.DateFormat
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import com.example.todoapp.presentation.constants.Constants
-import com.example.todoapp.presentation.constants.Emoji
-import com.example.todoapp.presentation.functions.priorityToRId
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
-import java.time.LocalDate
+import com.example.todoapp.presentation.utils.DateFormat
 
 @Composable
 fun ListTodoItem(
@@ -57,8 +54,7 @@ fun ListTodoItem(
                 checkedColor = themeColors.colorGreen,
                 uncheckedColor = if (todoItem.priority == Priority.HIGH) {
                     themeColors.colorRed
-                }
-                else {
+                } else {
                     themeColors.supportSeparator
                 },
             )

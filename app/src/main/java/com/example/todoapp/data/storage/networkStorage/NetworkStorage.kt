@@ -1,9 +1,9 @@
 package com.example.todoapp.data.storage.networkStorage
 
 import android.util.Log
-import com.example.todoapp.data.network.Constants.NetworkConstants
-import com.example.todoapp.data.network.DTOs.ResponseDto
 import com.example.todoapp.data.network.Network
+import com.example.todoapp.data.network.constants.NetworkConstants
+import com.example.todoapp.data.network.dtos.ResponseDto
 import com.example.todoapp.data.network.toTodoItem
 import com.example.todoapp.data.storage.TaskStorage
 import com.example.todoapp.data.storage.models.StorageResult
@@ -11,7 +11,10 @@ import com.example.todoapp.data.storage.models.StorageResultStatus
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 
-class NetworkStorage: TaskStorage {
+/**
+ * Provide access to data on the server
+ **/
+class NetworkStorage : TaskStorage {
     override suspend fun getList(): StorageResult<Map<String, TodoItem>> {
         val networkResult = Network.getList()
 

@@ -1,6 +1,5 @@
 package com.example.todoapp.presentation.screens.edit
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,7 +29,7 @@ class EditViewModel @Inject constructor(
     private val deleteTodoItemUseCase: DeleteTodoItemUseCase,
     private val destroyRepositoryUseCase: DestroyRepositoryUseCase,
     private val savedStateHandle: SavedStateHandle,
-): ViewModel() {
+) : ViewModel() {
     private var todoItem = TodoItem()
 
     private val _screenState = MutableStateFlow(EditScreenState())
@@ -61,39 +60,13 @@ class EditViewModel @Inject constructor(
     }
     fun screenAction(action: EditScreenAction) {
         when (action) {
-            EditScreenAction.OnTaskSave -> {
-                saveItem()
-            }
-            EditScreenAction.OnTaskDelete -> {
-                deleteItem()
-            }
-            is EditScreenAction.OnTextChange -> {
-                _screenState.update {
-                    screenState.value.copy(
-                        text = action.text
-                    )
-                }
-            }
-            is EditScreenAction.OnDeadlineExistenceChange -> _screenState.update {
-                screenState.value.copy(
-                    hasDeadline = action.hasDeadline
-                )
-            }
-            is EditScreenAction.OnPrioritySelect -> _screenState.update {
-                screenState.value.copy(
-                    priority = action.priority
-                )
-            }
-            is EditScreenAction.OnDeadlineSelect -> _screenState.update {
-                screenState.value.copy(
-                    deadline = action.deadline
-                )
-            }
-            is EditScreenAction.OnErrorSnackBarClick -> _screenState.update {
-                screenState.value.copy(
-                    isSuccessfulAction = !screenState.value.isSuccessfulAction
-                )
-            }
+            EditScreenAction.OnTaskSave -> saveItem()
+            EditScreenAction.OnTaskDelete -> deleteItem()
+            is EditScreenAction.OnTextChange -> changeText(action)
+            is EditScreenAction.OnDeadlineExistenceChange -> deadlineExistenceChange(action)
+            is EditScreenAction.OnPrioritySelect -> prioritySelect(action)
+            is EditScreenAction.OnDeadlineSelect -> deadlineSelect(action)
+            EditScreenAction.OnErrorSnackBarClick -> errorSnackBarClick()
             else -> {}
         }
     }
@@ -137,7 +110,47 @@ class EditViewModel @Inject constructor(
             }
         }
     }
-    private fun <T>updateSnackBarData(result: StorageResult<T>, action: EditScreenAction, isLeaving: Boolean = false) {
+    private fun changeText(action: EditScreenAction.OnTextChange) {
+        _screenState.update {
+            screenState.value.copy(
+                text = action.text
+            )
+        }
+    }
+    private fun deadlineExistenceChange(action: EditScreenAction.OnDeadlineExistenceChange) {
+        _screenState.update {
+            screenState.value.copy(
+                hasDeadline = action.hasDeadline
+            )
+        }
+    }
+    private fun prioritySelect(action: EditScreenAction.OnPrioritySelect) {
+        _screenState.update {
+            screenState.value.copy(
+                priority = action.priority
+            )
+        }
+    }
+    private fun deadlineSelect(action: EditScreenAction.OnDeadlineSelect) {
+        _screenState.update {
+            screenState.value.copy(
+                deadline = action.deadline
+            )
+        }
+    }
+    private fun errorSnackBarClick() {
+        _screenState.update {
+            screenState.value.copy(
+                isSuccessfulAction = !screenState.value.isSuccessfulAction
+            )
+        }
+    }
+
+    private fun <T>updateSnackBarData(
+        result: StorageResult<T>,
+        action: EditScreenAction,
+        isLeaving: Boolean = false
+    ) {
         if (result.status != StorageResultStatus.SUCCESS) {
             _screenState.update {
                 screenState.value.copy(
@@ -146,8 +159,7 @@ class EditViewModel @Inject constructor(
                     isLeaving = false,
                 )
             }
-        }
-        else {
+        } else {
             _screenState.update {
                 screenState.value.copy(
                     isSuccessfulAction = false,

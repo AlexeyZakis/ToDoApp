@@ -3,7 +3,10 @@ package com.example.todoapp.presentation.themes.mainTheme
 import androidx.compose.ui.graphics.Color
 import com.example.todoapp.presentation.themes.Theme
 
-object MainTheme: Theme() {
+/**
+ * Project theme implementation
+ **/
+object MainTheme : Theme() {
     // Light
     override val lightSupportSeparator = Color(0x33000000)
     override val lightSupportOverlay = Color(0x0F000000)

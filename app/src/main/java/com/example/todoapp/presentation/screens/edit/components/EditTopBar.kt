@@ -44,7 +44,7 @@ fun EditTopBar(
         TextButton(
             onClick = {
                 screenAction(EditScreenAction.OnTaskSave)
-          },
+            },
             colors = ButtonDefaults.textButtonColors(
                 contentColor = themeColors.colorBlue,
             ),
