@@ -1,4 +1,4 @@
-package com.example.todoapp.di
+package com.example.todoapp
 
 import android.app.Application
 import android.content.Context

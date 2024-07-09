@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
+import com.example.todoapp.presentation.constants.Mode
 import com.example.todoapp.presentation.screens.edit.components.EditDeadline
 import com.example.todoapp.presentation.screens.edit.components.EditDeleteBtn
 import com.example.todoapp.presentation.screens.edit.components.EditDivider
@@ -87,7 +88,7 @@ fun EditScreen(
             )
             EditDivider(padding = PaddingValues())
             EditDeleteBtn(
-                enabled = screenState.text.isNotEmpty(),
+                enabled = screenState.mode == Mode.EDIT_ITEM,
                 screenAction = screenAction,
             )
         }

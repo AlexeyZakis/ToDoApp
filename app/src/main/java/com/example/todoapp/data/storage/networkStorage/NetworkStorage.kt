@@ -104,5 +104,6 @@ class NetworkStorage : TaskStorage {
         )
     }
     private fun isError(networkResult: ResponseDto?) =
-        networkResult == null || networkResult.status != NetworkConstants.SUCCESS_STATUS
+        networkResult == null ||
+            networkResult.status != NetworkConstants.SUCCESS_STATUS
 }

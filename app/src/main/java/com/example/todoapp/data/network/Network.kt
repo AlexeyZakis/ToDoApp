@@ -124,7 +124,6 @@ object Network {
             path = "${NetworkConstants.PATH}/$id",
             headers = mapOf(
                 NetworkConstants.Headers.REVISION to "$lastKnownRevision",
-                NetworkConstants.Headers.FAILS to "50",
             ),
         )
         return when (result) {

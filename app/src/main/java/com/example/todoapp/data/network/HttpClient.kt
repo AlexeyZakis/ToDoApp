@@ -43,8 +43,8 @@ val okHttpClient = OkHttpClient.Builder()
     .protocols(listOf(Protocol.HTTP_2, Protocol.HTTP_1_1))
     .connectionPool(
         ConnectionPool(
-            maxIdleConnections = 5,
-            keepAliveDuration = 5,
+            maxIdleConnections = NetworkConstants.HttpClientSettings.MAX_IDLE_CONNECTIONS,
+            keepAliveDuration = NetworkConstants.HttpClientSettings.KEEP_ALIVE_DURATION_MINUTES,
             timeUnit = TimeUnit.MINUTES
         )
     )
