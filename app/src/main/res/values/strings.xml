@@ -13,10 +13,15 @@
     <string name="priorityLow">Не важно</string>
     <string name="taskDeadline">Сделать до</string>
     <string name="infoBtnDescription">Инфо</string>
-    <string name="closeBtnDescription">Инфо</string>
+    <string name="closeBtnDescription">Закрыть</string>
     <string name="hideDoneTaskBtnDescription">Скрыть выполненые</string>
     <string name="deleteBtnDescription">Удалить</string>
     <string name="floatingAddActionButtonDescription">Добавить</string>
     <string name="calendarOk">Ок</string>
     <string name="calendarCancel">Отмена</string>
+    <string name="retry">Повторить</string>
+    <string name="saveError">Не удалось сохранить</string>
+    <string name="deleteError">Не удалось удалить</string>
+    <string name="addError">Не удалось добавить</string>
+    <string name="editError">Не удалось изменить</string>
 </resources>

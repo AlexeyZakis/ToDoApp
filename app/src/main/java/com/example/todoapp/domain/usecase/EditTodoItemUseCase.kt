@@ -4,7 +4,5 @@ import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.domain.repository.TodoItemsRepository
 
 class EditTodoItemUseCase(private val todoItemsRepository: TodoItemsRepository) {
-    fun execute(todoItem: TodoItem) {
-        todoItemsRepository.editTodoItem(todoItem)
-    }
+    suspend operator fun invoke(todoItem: TodoItem) = todoItemsRepository.editTodoItem(todoItem)
 }

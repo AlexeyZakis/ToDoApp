@@ -15,12 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.domain.models.Priority
-import com.example.todoapp.presentation.constants.Emoji
-import com.example.todoapp.presentation.functions.getPriorityEmoji
-import com.example.todoapp.presentation.functions.priorityToRId
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
+import com.example.todoapp.presentation.utils.getPriorityEmoji
+import com.example.todoapp.presentation.utils.priorityToRId
 
 @Composable
 fun EditPriorityDropdownMenuElement(
@@ -29,12 +28,12 @@ fun EditPriorityDropdownMenuElement(
     onClick: () -> Unit,
 ) {
     var selected by remember { mutableStateOf(isSelected) }
-    val color = when(priority) {
+    val color = when (priority) {
         Priority.HIGH -> themeColors.colorRed
         else -> themeColors.labelPrimary
     }
     val priorityText = getPriorityEmoji(priority) +
-            stringResource(id = priorityToRId(priority))
+        stringResource(id = priorityToRId(priority))
     Box(
         modifier = Modifier
             .fillMaxWidth()

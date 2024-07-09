@@ -40,7 +40,6 @@ import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
 import kotlinx.coroutines.delay
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> SwipeLazyColumn(
@@ -72,13 +71,13 @@ fun <T> SwipeLazyColumn(
     )
 
     LaunchedEffect(key1 = isEndToStartSwipe) {
-        if(isEndToStartSwipe) {
+        if (isEndToStartSwipe) {
             delay(animationDuration.toLong())
             onSwipeEndToStart(item)
         }
     }
     LaunchedEffect(key1 = isStartToEndSwipe) {
-        if(isStartToEndSwipe) {
+        if (isStartToEndSwipe) {
             delay(animationDuration.toLong())
             onSwipeStartToEnd(item)
         }

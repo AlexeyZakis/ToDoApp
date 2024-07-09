@@ -2,7 +2,7 @@ package com.example.todoapp.presentation.screens.edit.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,13 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
-import com.example.todoapp.presentation.constants.Emoji
-import com.example.todoapp.presentation.functions.getPriorityEmoji
-import com.example.todoapp.presentation.functions.priorityToRId
-import com.example.todoapp.presentation.screens.edit.action.EditScreenAction
+import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
+import com.example.todoapp.presentation.utils.getPriorityEmoji
+import com.example.todoapp.presentation.utils.priorityToRId
 
 @Composable
 fun EditPriority(
@@ -31,11 +30,11 @@ fun EditPriority(
     val isHighPriority = remember(priority) { priority == Priority.HIGH }
 
     Column(
-        modifier = modifier.
-            clickable { expanded = !expanded }
+        modifier = modifier
+            .clickable { expanded = !expanded }
     ) {
         val priorityText = getPriorityEmoji(priority) +
-                stringResource(id = priorityToRId(priority))
+            stringResource(id = priorityToRId(priority))
         Text(
             text = stringResource(id = R.string.priorityTitle),
             color = themeColors.labelPrimary
@@ -44,8 +43,7 @@ fun EditPriority(
             text = priorityText,
             color = if (isHighPriority) {
                 themeColors.colorRed
-            }
-            else {
+            } else {
                 themeColors.labelTertiary
             }
         )

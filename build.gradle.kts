@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.google.dagger.hilt.android) apply false
+    id("io.gitlab.arturbosch.detekt") version "1.23.6"
 }
