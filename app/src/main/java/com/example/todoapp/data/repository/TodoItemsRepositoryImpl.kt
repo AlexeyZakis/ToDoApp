@@ -63,7 +63,10 @@ class TodoItemsRepositoryImpl(
     override suspend fun getTodoItem(todoItemId: String): StorageResult<TodoItem> {
         val response = taskStorage.getItem(todoItemId)
         if (response.status.isSuccess()) {
-            return StorageResult(status = response.status, data = _todoItems.value[todoItemId])
+            return StorageResult(
+                status = response.status,
+                data = _todoItems.value[todoItemId]
+            )
         }
         return response
     }
@@ -109,7 +112,10 @@ class TodoItemsRepositoryImpl(
         } else {
             _isDataLoadedSuccessfully.value = false
         }
-        return StorageResult(status = response.status, data = null)
+        return StorageResult(
+            status = response.status,
+            data = null
+        )
     }
     private fun addOrEditItem(todoItem: TodoItem) {
         _todoItems.update {

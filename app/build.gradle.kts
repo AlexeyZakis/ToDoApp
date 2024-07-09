@@ -1,5 +1,3 @@
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import java.util.Properties
 
 plugins {
@@ -9,36 +7,6 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.serialization)
     id("io.gitlab.arturbosch.detekt") version "1.23.6"
-}
-
-detekt {
-    buildUponDefaultConfig = true // preconfigure defaults
-    allRules = false // activate all available (even unstable) rules.
-    config.setFrom(
-        "$projectDir/config/detekt.yml"
-    ) // point to your custom config defining rules to run, overwriting default behavior
-    baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
-}
-
-tasks.withType<Detekt>().configureEach {
-    reports {
-        html.required.set(true) // observe findings in your browser with structure and code snippets
-        xml.required.set(true) // checkstyle like format mainly for integrations like Jenkins
-        txt.required.set(
-            true
-        ) // similar to the console output, contains issue signature to manually edit baseline files
-        sarif.required.set(
-            true
-        ) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
-        md.required.set(true) // simple Markdown format
-    }
-}
-
-tasks.withType<Detekt>().configureEach {
-    jvmTarget = "1.8"
-}
-tasks.withType<DetektCreateBaselineTask>().configureEach {
-    jvmTarget = "1.8"
 }
 
 fun getLocalProperty(propertyName: String, project: Project): String {
@@ -54,7 +22,6 @@ fun getLocalProperty(propertyName: String, project: Project): String {
 
 // From local.properties
 val apiToken: String = getLocalProperty("API_TOKEN", project)
-val clientId: String = getLocalProperty("CLIENT_ID", project)
 
 android {
     namespace = "com.example.todoapp"
@@ -70,9 +37,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_TOKEN", "\"$apiToken\"")
-        buildConfigField("String", "CLIENT_ID", "\"$clientId\"")
-
-        manifestPlaceholders["YANDEX_CLIENT_ID"] = clientId
     }
 
     buildTypes {
@@ -134,8 +98,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.androidx.work.runtime.ktx)
-
-    implementation(libs.authsdk)
 }
 
 kapt {

@@ -12,6 +12,5 @@ object Constants {
     const val UPDATE_WORKER_BETWEEN_RETRY_HOURS: Long = 1L
 
     const val UPDATE_DATA_WORK_DEBUG = "UpdateDataWorkDebug"
-    const val CONNECTIVITY_RECEIVER_DEBUG = "ConnectivityReceiverDebug"
-    const val YANDEX_AUTH_DEBUG = "YandexAuthDebug"
+    const val CONNECTIVITY_DEBUG = "ConnectivityDebug"
 }
