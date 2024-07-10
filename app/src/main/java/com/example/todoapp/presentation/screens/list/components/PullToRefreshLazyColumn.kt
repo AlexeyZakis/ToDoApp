@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.todoapp.data.storage.disposableStorage.DisposableStorage
+import com.example.todoapp.data.storage.runtimeStorage.RuntimeStorage
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
 import kotlinx.coroutines.runBlocking
@@ -74,7 +74,7 @@ fun PullToRefreshLazyColumn(
 private fun PullToRefreshLazyColumnPreview() {
     val data: Items
     runBlocking {
-        data = Items(DisposableStorage().getList().data?.values?.toList() ?: listOf())
+        data = Items(RuntimeStorage().getList().data?.values?.toList() ?: listOf())
     }
     PullToRefreshLazyColumn(
         modifier = Modifier,

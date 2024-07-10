@@ -57,6 +57,7 @@ class TodoItemsRepositoryImpl(
             hideDoneTask
         }
     }
+
     override val doneTaskCounter: Int
         get() = _todoItems.value.values.count { it.isDone }
 
@@ -70,6 +71,7 @@ class TodoItemsRepositoryImpl(
         }
         return response
     }
+
     override suspend fun addTodoItem(todoItem: TodoItem): StorageResult<Nothing> {
         val response = taskStorage.addItem(todoItem)
         if (response.status.isSuccess()) {
@@ -77,6 +79,7 @@ class TodoItemsRepositoryImpl(
         }
         return response
     }
+
     override suspend fun deleteTodoItem(todoItemId: String): StorageResult<Nothing> {
         val response = taskStorage.deleteItem(todoItemId)
         if (
@@ -91,6 +94,7 @@ class TodoItemsRepositoryImpl(
         }
         return response
     }
+
     override suspend fun editTodoItem(todoItem: TodoItem): StorageResult<Nothing> {
         val response = taskStorage.updateItem(todoItem)
         if (
@@ -117,6 +121,7 @@ class TodoItemsRepositoryImpl(
             data = null
         )
     }
+
     private fun addOrEditItem(todoItem: TodoItem) {
         _todoItems.update {
             val updatedValues = todoItems.value.toMutableMap()
@@ -128,6 +133,7 @@ class TodoItemsRepositoryImpl(
     override fun setConnectedStatus(isConnected: Boolean) {
         _hasInternet.value = isConnected
     }
+
     override fun destroy() {
         repositoryScope.cancel()
     }

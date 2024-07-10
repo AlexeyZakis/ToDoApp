@@ -1,4 +1,4 @@
-package com.example.todoapp.data.storage.disposableStorage
+package com.example.todoapp.data.storage.runtimeStorage
 
 import com.example.todoapp.data.storage.TaskStorage
 import com.example.todoapp.data.storage.models.StorageResult
@@ -12,7 +12,7 @@ import com.thedeanda.lorem.LoremIpsum
 /**
  * Temp storage for testing. Do not save data
  **/
-class DisposableStorage : TaskStorage {
+class RuntimeStorage : TaskStorage {
     private val items = mutableMapOf<String, TodoItem>()
     private val lorem: Lorem = LoremIpsum.getInstance()
 

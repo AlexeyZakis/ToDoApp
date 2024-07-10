@@ -75,6 +75,10 @@ ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serializati
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
 
+agp = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -84,7 +88,11 @@ serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref 
 
 [bundles]
 ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-contentNegotiation", "ktor-client-logging", "ktor-json", "ktor-client-serialization"]
-hilt = ["hilt-android", "androidx-hilt-navigation-compose"]
+hilt = [
+    "hilt-android",
+    "androidx-hilt-navigation-compose",
+    "androidx-hilt-work"
+]
 compose = [
     "compose-ui",
     "compose-ui-tooling-preview",
