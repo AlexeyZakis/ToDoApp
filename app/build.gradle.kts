@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("conventions.android-app-convention")
     alias(libs.plugins.google.dagger.hilt.android)
@@ -8,14 +6,9 @@ plugins {
     id("telegram-reporter")
 }
 
-// From local.properties
-val apiToken: String = getLocalProperty("API_TOKEN", project)
-val tgToken: String = getLocalProperty("TG_TOKEN", project)
-val tgChat: String = getLocalProperty("TG_CHAT", project)
-
 tgReporter {
-    tgBotToken.set(tgToken)
-    tgUserChatId.set(tgChat)
+    tgBotToken.set(providers.environmentVariable("TG_TOKEN"))
+    tgUserChatId.set(providers.environmentVariable("TG_CHAT"))
 
     apkName.set("todolist")
 
@@ -33,7 +26,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_TOKEN", "\"$apiToken\"")
+        buildConfigField(
+            "String",
+            "API_TOKEN",
+            "\"${System.getenv("API_TOKEN") ?: ""}\""
+        )
     }
 }
 
@@ -41,13 +38,11 @@ dependencies {
 
 }
 
-fun getLocalProperty(propertyName: String, project: Project): String {
-    val localPropertiesFile = project.rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        val properties = Properties()
-        properties.load(localPropertiesFile.inputStream())
-        return properties.getProperty(propertyName)
-    } else {
-        throw GradleException("Could not find 'local.properties' file.")
+// Print all environment variables (For debug)
+tasks.register("checkEnvironmentVariables") {
+    doLast {
+        System.getenv().forEach { (key, value) ->
+            println("$key = $value")
+        }
     }
 }
