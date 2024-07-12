@@ -15,7 +15,7 @@ import com.example.todoapp.domain.usecase.EditTodoItemUseCase
 import com.example.todoapp.domain.usecase.GetIsDataLoadedSuccessfullyUseCase
 import com.example.todoapp.domain.usecase.GetItemListUseCase
 import com.example.todoapp.domain.usecase.GetNumberOfDoneTaskUseCase
-import com.example.todoapp.domain.usecase.RefreshDataUseCase
+import com.example.todoapp.domain.usecase.SyncDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ class ListViewModel @Inject constructor(
     private val checkIsDoneTaskHiddenUseCase: CheckIsDoneTaskHiddenUseCase,
     private val getIsDataLoadedSuccessfullyUseCase: GetIsDataLoadedSuccessfullyUseCase,
     private val destroyRepositoryUseCase: DestroyRepositoryUseCase,
-    private val refreshDataUseCase: RefreshDataUseCase,
+    private val syncDataUseCase: SyncDataUseCase,
     private val checkHasInternetUseCase: CheckHasInternetUseCase
 ) : ViewModel() {
     private val _screenState = MutableStateFlow(ListScreenState())
@@ -53,12 +53,12 @@ class ListViewModel @Inject constructor(
         state.copy(
             todoItems = Items(
                 (
-                    if (hideDoneTask) {
-                        items.values.filter { !it.isDone }
-                    } else {
-                        items.values
-                    }
-                    ).toList()
+                        if (hideDoneTask) {
+                            items.values.filter { !it.isDone }
+                        } else {
+                            items.values
+                        }
+                        ).toList()
             ),
             doneTaskCounter = getNumberOfDoneTaskUseCase(),
             hideDoneTask = hideDoneTask,
@@ -74,7 +74,7 @@ class ListViewModel @Inject constructor(
         viewModelScope.launch {
             isConnectedStateFlow.collect { isConnected ->
                 if (isConnected) {
-                    refreshDataUseCase()
+                    syncDataUseCase()
                 }
             }
         }
@@ -84,39 +84,46 @@ class ListViewModel @Inject constructor(
         when (action) {
             is ListScreenAction.OnTodoItemCompletionChange -> changeTodoItemCompletion(action.todoItem)
             is ListScreenAction.OnDoneTaskVisibilityChange -> changeDoneTaskVisibility(action.hideDoneTask)
-            is ListScreenAction.OnTodoItemDelete -> deleteTodoItem(action.todoItem.id)
+            is ListScreenAction.OnTodoItemDelete -> deleteTodoItem(action.todoItem)
             is ListScreenAction.OnRefreshData -> refreshData(callback)
             is ListScreenAction.OnErrorSnackBarClick -> errorSnackBarClick()
             else -> {}
         }
     }
+
     private fun changeDoneTaskVisibility(hideDoneTask: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             changeDoneTaskVisibilityUseCase(hideDoneTask)
         }
     }
-    private fun deleteTodoItem(todoItemId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            deleteTodoItemUseCase(todoItemId)
+
+    private fun deleteTodoItem(todoItem: TodoItem) {
+        viewModelScope.launch {
+            deleteTodoItemUseCase(todoItem)
         }
     }
+
     private fun changeTodoItemCompletion(todoItem: TodoItem) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = editTodoItemUseCase(todoItem)
+        viewModelScope.launch {
+            val result = editTodoItemUseCase(todoItem.copy(
+                modificationDate = System.currentTimeMillis(),
+            ))
             updateSnackBarData(
                 result = result,
                 action = ListScreenAction.OnTodoItemCompletionChange(todoItem),
             )
         }
     }
+
     private fun refreshData(onComplete: () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            refreshDataUseCase()
+        viewModelScope.launch {
+            syncDataUseCase()
             withContext(Dispatchers.Main) {
                 onComplete()
             }
         }
     }
+
     private fun errorSnackBarClick() {
         _screenState.update {
             screenState.value.copy(
@@ -124,7 +131,8 @@ class ListViewModel @Inject constructor(
             )
         }
     }
-    private fun <T>updateSnackBarData(result: StorageResult<T>, action: ListScreenAction) {
+
+    private fun <T> updateSnackBarData(result: StorageResult<T>, action: ListScreenAction) {
         if (result.status != StorageResultStatus.SUCCESS) {
             _screenState.update {
                 screenState.value.copy(
@@ -141,6 +149,7 @@ class ListViewModel @Inject constructor(
             }
         }
     }
+
     override fun onCleared() {
         super.onCleared()
         destroyRepositoryUseCase()

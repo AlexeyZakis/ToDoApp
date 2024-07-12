@@ -1,4 +1,4 @@
-package com.example.todoapp.data.network.constants
+package com.example.todoapp.data.network
 
 object NetworkConstants {
     const val HOST = "beta.mrdekk.ru/todo"

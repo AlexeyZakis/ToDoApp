@@ -1,6 +1,5 @@
-package com.example.todoapp.data.storage.runtimeStorage
+package com.example.todoapp.data.storage
 
-import com.example.todoapp.data.storage.TaskStorage
 import com.example.todoapp.data.storage.models.StorageResult
 import com.example.todoapp.data.storage.models.StorageResultStatus
 import com.example.todoapp.domain.models.Items
@@ -86,8 +85,8 @@ class RuntimeStorage : TaskStorage {
         )
     }
 
-    override suspend fun deleteItem(id: String): StorageResult<Nothing> {
-        items.remove(id)
+    override suspend fun deleteItem(todoItem: TodoItem): StorageResult<Nothing> {
+        items.remove(todoItem.id)
         return StorageResult(
             status = StorageResultStatus.SUCCESS,
             data = null

@@ -14,8 +14,15 @@ val tgToken: String = getLocalProperty("TG_TOKEN", project)
 val tgChat: String = getLocalProperty("TG_CHAT", project)
 
 tgReporter {
-    token.set(tgToken)
-    chatId.set(tgChat)
+    tgBotToken.set(tgToken)
+    tgUserChatId.set(tgChat)
+
+    apkName.set("todolist")
+
+    enableApkSizeValidator.set(true)
+    maxApkSizeMB.set(16)
+
+    enableApkDetailer.set(true)
 }
 
 android {

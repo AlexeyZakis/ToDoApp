@@ -1,7 +1,6 @@
 package com.example.todoapp.data.network
 
 import com.example.todoapp.BuildConfig
-import com.example.todoapp.data.network.constants.NetworkConstants
 import okhttp3.Interceptor
 import okhttp3.Response
 

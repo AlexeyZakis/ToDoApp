@@ -12,7 +12,7 @@ import com.example.todoapp.domain.usecase.GetIsDataLoadedSuccessfullyUseCase
 import com.example.todoapp.domain.usecase.GetItemListUseCase
 import com.example.todoapp.domain.usecase.GetNumberOfDoneTaskUseCase
 import com.example.todoapp.domain.usecase.GetTodoItemUseCase
-import com.example.todoapp.domain.usecase.RefreshDataUseCase
+import com.example.todoapp.domain.usecase.SyncDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,8 +58,8 @@ class DomainModule {
         GetIsDataLoadedSuccessfullyUseCase(todoItemsRepository = todoItemsRepository)
 
     @Provides
-    fun provideRefreshDataUseCase(todoItemsRepository: TodoItemsRepository) =
-        RefreshDataUseCase(todoItemsRepository = todoItemsRepository)
+    fun provideSyncDataUseCase(todoItemsRepository: TodoItemsRepository) =
+        SyncDataUseCase(todoItemsRepository = todoItemsRepository)
 
     @Provides
     fun provideDestroyRepositoryUseCase(todoItemsRepository: TodoItemsRepository) =

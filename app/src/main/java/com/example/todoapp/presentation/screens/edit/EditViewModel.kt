@@ -14,7 +14,6 @@ import com.example.todoapp.domain.usecase.GetTodoItemUseCase
 import com.example.todoapp.presentation.constants.Mode
 import com.example.todoapp.presentation.screens.navigation.routes.EditRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -58,6 +57,7 @@ class EditViewModel @Inject constructor(
             }
         }
     }
+
     fun screenAction(action: EditScreenAction) {
         when (action) {
             EditScreenAction.OnTaskSave -> saveItem()
@@ -70,6 +70,7 @@ class EditViewModel @Inject constructor(
             else -> {}
         }
     }
+
     private fun saveItem() {
         todoItem = todoItem.copy(
             taskText = screenState.value.text,
@@ -82,11 +83,12 @@ class EditViewModel @Inject constructor(
             modificationDate = System.currentTimeMillis(),
         )
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val result = when (screenMode) {
                 Mode.ADD_ITEM -> {
                     addTodoItemUseCase(todoItem)
                 }
+
                 Mode.EDIT_ITEM -> {
                     editTodoItemUseCase(todoItem)
                 }
@@ -98,10 +100,11 @@ class EditViewModel @Inject constructor(
             )
         }
     }
+
     private fun deleteItem() {
         if (screenMode == Mode.EDIT_ITEM) {
-            viewModelScope.launch(Dispatchers.IO) {
-                val result = deleteTodoItemUseCase(todoItem.id)
+            viewModelScope.launch {
+                val result = deleteTodoItemUseCase(todoItem)
                 updateSnackBarData(
                     result = result,
                     action = EditScreenAction.OnTaskDelete,
@@ -110,6 +113,7 @@ class EditViewModel @Inject constructor(
             }
         }
     }
+
     private fun changeText(action: EditScreenAction.OnTextChange) {
         _screenState.update {
             screenState.value.copy(
@@ -117,6 +121,7 @@ class EditViewModel @Inject constructor(
             )
         }
     }
+
     private fun deadlineExistenceChange(action: EditScreenAction.OnDeadlineExistenceChange) {
         _screenState.update {
             screenState.value.copy(
@@ -124,6 +129,7 @@ class EditViewModel @Inject constructor(
             )
         }
     }
+
     private fun prioritySelect(action: EditScreenAction.OnPrioritySelect) {
         _screenState.update {
             screenState.value.copy(
@@ -131,6 +137,7 @@ class EditViewModel @Inject constructor(
             )
         }
     }
+
     private fun deadlineSelect(action: EditScreenAction.OnDeadlineSelect) {
         _screenState.update {
             screenState.value.copy(
@@ -138,6 +145,7 @@ class EditViewModel @Inject constructor(
             )
         }
     }
+
     private fun errorSnackBarClick() {
         _screenState.update {
             screenState.value.copy(
@@ -146,7 +154,7 @@ class EditViewModel @Inject constructor(
         }
     }
 
-    private fun <T>updateSnackBarData(
+    private fun <T> updateSnackBarData(
         result: StorageResult<T>,
         action: EditScreenAction,
         isLeaving: Boolean = false
@@ -169,6 +177,7 @@ class EditViewModel @Inject constructor(
             }
         }
     }
+
     override fun onCleared() {
         super.onCleared()
         destroyRepositoryUseCase()

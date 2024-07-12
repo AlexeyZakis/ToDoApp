@@ -1,7 +1,6 @@
 package com.example.todoapp.data.network
 
 import android.util.Log
-import com.example.todoapp.data.network.constants.NetworkConstants
 import com.example.todoapp.data.network.dtos.ElementDto
 import com.example.todoapp.data.network.dtos.ErrorDto
 import com.example.todoapp.data.network.dtos.ListDto
@@ -34,6 +33,7 @@ object Network {
         }
     }
     suspend fun updateList(list: Items): ListDto? {
+        updateRevision()
         val body = wrap(
             NetworkConstants.Wrappers.LIST,
             json.encodeToString(list.items.map { it.toDto(deviceId) })
@@ -71,6 +71,7 @@ object Network {
         }
     }
     suspend fun addItem(todoItem: TodoItem): ElementDto? {
+        updateRevision()
         val body = wrap(
             NetworkConstants.Wrappers.ELEMENT,
             json.encodeToString(todoItem.toDto(deviceId))
@@ -95,6 +96,7 @@ object Network {
         }
     }
     suspend fun updateItem(todoItem: TodoItem): ElementDto? {
+        updateRevision()
         val body = wrap(
             NetworkConstants.Wrappers.ELEMENT,
             json.encodeToString(todoItem.toDto(deviceId))
@@ -118,10 +120,11 @@ object Network {
             }
         }
     }
-    suspend fun deleteItem(id: String): ElementDto? {
+    suspend fun deleteItem(todoItem: TodoItem): ElementDto? {
+        updateRevision()
         val result = client.safeRequest<ElementDto, ErrorDto>(
             method = HttpMethod.Delete,
-            path = "${NetworkConstants.PATH}/$id",
+            path = "${NetworkConstants.PATH}/${todoItem.id}",
             headers = mapOf(
                 NetworkConstants.Headers.REVISION to "$lastKnownRevision",
             ),
@@ -133,6 +136,17 @@ object Network {
             is NetworkResult.Error -> {
                 onError("deleteItem", result)
             }
+        }
+    }
+    private suspend fun updateRevision() {
+        // TODO : Replace if the corresponding method is added
+        getList()
+    }
+    // For debug
+    suspend fun deleteAll() {
+        val result = getList()
+        result?.list?.forEach {
+            deleteItem(it.toTodoItem())
         }
     }
     private fun wrap(wrapper: String, body: String) = buildJsonObject {

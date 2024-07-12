@@ -1,11 +1,9 @@
-package com.example.todoapp.data.storage.networkStorage
+package com.example.todoapp.data.storage
 
-import android.util.Log
 import com.example.todoapp.data.network.Network
-import com.example.todoapp.data.network.constants.NetworkConstants
+import com.example.todoapp.data.network.NetworkConstants
 import com.example.todoapp.data.network.dtos.ResponseDto
 import com.example.todoapp.data.network.toTodoItem
-import com.example.todoapp.data.storage.TaskStorage
 import com.example.todoapp.data.storage.models.StorageResult
 import com.example.todoapp.data.storage.models.StorageResultStatus
 import com.example.todoapp.domain.models.Items
@@ -27,7 +25,6 @@ class NetworkStorage : TaskStorage {
         val result = networkResult?.list?.map {
             it.toTodoItem()
         }?.associateBy { it.id } ?: mapOf()
-        Log.w(NetworkConstants.DEBUG, "Num of items: ${result.size}")
 
         return StorageResult(
             status = StorageResultStatus.SUCCESS,
@@ -48,6 +45,7 @@ class NetworkStorage : TaskStorage {
             data = null
         )
     }
+
     override suspend fun getItem(id: String): StorageResult<TodoItem> {
         val networkResult = Network.getItem(id)
         if (isError(networkResult)) {
@@ -90,8 +88,8 @@ class NetworkStorage : TaskStorage {
         )
     }
 
-    override suspend fun deleteItem(id: String): StorageResult<Nothing> {
-        val networkResult = Network.deleteItem(id)
+    override suspend fun deleteItem(todoItem: TodoItem): StorageResult<Nothing> {
+        val networkResult = Network.deleteItem(todoItem)
         if (isError(networkResult)) {
             return StorageResult(
                 status = StorageResultStatus.ERROR,
@@ -103,7 +101,8 @@ class NetworkStorage : TaskStorage {
             data = null
         )
     }
+
     private fun isError(networkResult: ResponseDto?) =
         networkResult == null ||
-            networkResult.status != NetworkConstants.SUCCESS_STATUS
+                networkResult.status != NetworkConstants.SUCCESS_STATUS
 }

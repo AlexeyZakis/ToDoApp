@@ -39,6 +39,8 @@ fun EditTopBar(
             modifier = Modifier
                 .padding(start = 16.dp)
                 .clickable { navigateBack() }
+                .padding(8.dp)
+
         )
         Spacer(modifier = Modifier.weight(1f))
         TextButton(

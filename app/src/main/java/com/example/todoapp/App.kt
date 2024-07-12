@@ -7,7 +7,7 @@ import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.example.todoapp.data.storage.TaskStorage
+import com.example.todoapp.domain.repository.TodoItemsRepository
 import com.example.todoapp.workers.UpdateDataWorker
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -24,12 +24,12 @@ class App : Application(), Configuration.Provider {
 }
 
 class UpdateDataWorkerFactory @Inject constructor(
-    private val api: TaskStorage
+    private val todoItemsRepository: TodoItemsRepository
 ) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker =
-        UpdateDataWorker(api, appContext, workerParameters)
+        UpdateDataWorker(todoItemsRepository, appContext, workerParameters)
 }
