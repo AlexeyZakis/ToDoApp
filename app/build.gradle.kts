@@ -22,7 +22,7 @@ tgReporter {
     enableApkSizeValidator.set(true)
     maxApkSizeMB.set(16)
 
-    enableApkDetailer.set(true)
+    enableApkDetailer.set(false)
 }
 
 android {

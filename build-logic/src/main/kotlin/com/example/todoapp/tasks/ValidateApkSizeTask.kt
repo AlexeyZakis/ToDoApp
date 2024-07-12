@@ -31,9 +31,8 @@ abstract class ValidateApkSizeTask @Inject constructor(
     @get:Input
     abstract val tgUserChatId: Property<String>
 
-    @get:Internal
-    val validationPassed: Property<Boolean> =
-        project.objects.property(Boolean::class.java)
+    @get:OutputFile
+    abstract val validationPassed: RegularFileProperty
 
     @get:OutputFile
     abstract val apkSizeFile: RegularFileProperty
@@ -43,7 +42,7 @@ abstract class ValidateApkSizeTask @Inject constructor(
     @TaskAction
     fun validate() {
         if (!validationEnable.getOrElse(false)) {
-            validationPassed.set(true)
+            validationPassed.get().asFile.writeText(true.toString())
             return
         }
         val tgBotToken = tgBotToken.get()
@@ -54,7 +53,7 @@ abstract class ValidateApkSizeTask @Inject constructor(
                 val apkSize = file.length() / byteInMegabyte
                 val maxApkSize = maxApkSizeMB.getOrElse(Int.MAX_VALUE)
                 val passed = apkSize <= maxApkSize
-                validationPassed.set(passed)
+                validationPassed.get().asFile.writeText(passed.toString())
                 val message = "Apk name: ${file.name}\n" +
                     "Size: $apkSize MB\n" +
                     "Max apk size: $maxApkSize MB\n" +

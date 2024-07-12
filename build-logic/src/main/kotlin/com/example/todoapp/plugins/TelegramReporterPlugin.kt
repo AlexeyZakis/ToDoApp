@@ -35,6 +35,7 @@ class TelegramReporterPlugin : Plugin<Project> {
             val variantName = variant.name.capitalize()
 
             val apkFile = File(project.buildDir, "apkSizeFile")
+            val validationPassedFile = File(project.buildDir, "validationPassed")
 
             val apkSizeValidator = project.tasks.register(
                 "apkSizeValidateFor$variantName",
@@ -47,6 +48,7 @@ class TelegramReporterPlugin : Plugin<Project> {
                     tgUserChatId.set(extension.tgUserChatId)
                     tgBotToken.set(extension.tgBotToken)
                     apkSizeFile.set(apkFile)
+                    validationPassed.set(validationPassedFile)
                     apkDir.set(artifacts)
                 }
             }
@@ -67,7 +69,11 @@ class TelegramReporterPlugin : Plugin<Project> {
                     validationEnabled.set(extension.enableApkSizeValidator)
                     apkName.set("$apkNameString-$variantName-$versionCode.apk")
                     onlyIf {
-                        apkSizeValidator.get().validationPassed.get()
+                        validationPassedFile.readText() == true.toString().also {
+                            println()
+                            println(validationPassedFile.readText())
+                            println()
+                        }
                     }
                 }
             }
@@ -83,11 +89,12 @@ class TelegramReporterPlugin : Plugin<Project> {
                     apkDir.set(artifacts)
                     tgBotToken.set(extension.tgBotToken)
                     tgUserChatId.set(extension.tgUserChatId)
+                    onlyIf {
+                        telegramSender.get().state.executed &&
+                                !telegramSender.get().state.skipped
+                    }
                 }
             }
-            // TODO : sometimes
-            //  Cannot query the value of task ':app:apkSizeValidateForDebug' property 'validationPassed' because it has no value available.
-            //  if ./gradlew :app:detailApkForDebug
             apkFileDetailer.dependsOn(telegramSender)
         }
     }
