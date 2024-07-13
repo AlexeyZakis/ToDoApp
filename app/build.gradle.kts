@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("conventions.android-app-convention")
     alias(libs.plugins.google.dagger.hilt.android)
@@ -18,6 +20,8 @@ tgReporter {
     enableApkDetailer.set(false)
 }
 
+val apiToken: String = getLocalProperty("API_TOKEN", project)
+
 android {
     defaultConfig {
         applicationId = "ru.yandex.school.ssmd24.todoapp"
@@ -26,11 +30,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField(
-            "String",
-            "API_TOKEN",
-            "\"${System.getenv("API_TOKEN") ?: ""}\""
-        )
+        buildConfigField("String", "API_TOKEN", "\"$apiToken\"")
     }
 }
 
@@ -44,5 +44,16 @@ tasks.register("checkEnvironmentVariables") {
         System.getenv().forEach { (key, value) ->
             println("$key = $value")
         }
+    }
+}
+
+fun getLocalProperty(propertyName: String, project: Project): String {
+    val localPropertiesFile = project.rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        val properties = Properties()
+        properties.load(localPropertiesFile.inputStream())
+        return properties.getProperty(propertyName)
+    } else {
+        throw GradleException("Could not find 'local.properties' file.")
     }
 }

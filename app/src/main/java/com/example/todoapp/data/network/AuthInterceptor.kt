@@ -14,7 +14,8 @@ class AuthInterceptor : Interceptor {
         val newRequest = originalRequest.newBuilder()
             .header(
                 NetworkConstants.Headers.AUTHORIZATION,
-                "${NetworkConstants.TOKEN_TYPE} ${BuildConfig.API_TOKEN}"
+                "${NetworkConstants.TOKEN_TYPE} " +
+                        (System.getenv("API_TOKEN") ?: BuildConfig.API_TOKEN)
             )
             .build()
         return chain.proceed(newRequest)
