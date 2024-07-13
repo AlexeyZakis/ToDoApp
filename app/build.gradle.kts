@@ -17,7 +17,7 @@ tgReporter {
     enableApkSizeValidator.set(true)
     maxApkSizeMB.set(16)
 
-    enableApkDetailer.set(false)
+    enableApkDetailer.set(true)
 }
 
 val apiToken: String = getLocalProperty("API_TOKEN", project)
@@ -38,15 +38,6 @@ dependencies {
 
 }
 
-// Print all environment variables (For debug)
-tasks.register("checkEnvironmentVariables") {
-    doLast {
-        System.getenv().forEach { (key, value) ->
-            println("$key = $value")
-        }
-    }
-}
-
 fun getLocalProperty(propertyName: String, project: Project): String {
     val localPropertiesFile = project.rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {
@@ -54,8 +45,5 @@ fun getLocalProperty(propertyName: String, project: Project): String {
         properties.load(localPropertiesFile.inputStream())
         return properties.getProperty(propertyName)
     }
-    return ""
-//    else {
-//        throw GradleException("Could not find 'local.properties' file.")
-//    }
+    return System.getenv("API_TOKEN")
 }
