@@ -53,7 +53,9 @@ fun getLocalProperty(propertyName: String, project: Project): String {
         val properties = Properties()
         properties.load(localPropertiesFile.inputStream())
         return properties.getProperty(propertyName)
-    } else {
-        throw GradleException("Could not find 'local.properties' file.")
     }
+    return ""
+//    else {
+//        throw GradleException("Could not find 'local.properties' file.")
+//    }
 }
