@@ -45,5 +45,5 @@ fun getLocalProperty(propertyName: String, project: Project): String {
         properties.load(localPropertiesFile.inputStream())
         return properties.getProperty(propertyName)
     }
-    return System.getenv("API_TOKEN")
+    return ""
 }
