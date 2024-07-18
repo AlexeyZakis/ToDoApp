@@ -1,6 +1,5 @@
 package com.example.todoapp.data.network
 
-import com.example.todoapp.data.network.constants.NetworkConstants
 import com.example.todoapp.data.network.dtos.TodoItemDto
 import com.example.todoapp.domain.models.Priority
 import com.example.todoapp.domain.models.TodoItem
@@ -17,7 +16,7 @@ fun TodoItem.toDto(deviceId: String): TodoItemDto {
         deadline = this.deadlineDate,
         done = this.isDone,
         color = null,
-        createdAt = this.startDate,
+        createdAt = this.creationDate,
         changedAt = this.modificationDate,
         lastUpdatedBy = deviceId
     )
@@ -27,7 +26,7 @@ fun TodoItemDto.toTodoItem(): TodoItem {
     return TodoItem(
         id = this.id,
         taskText = this.text,
-        startDate = this.createdAt,
+        creationDate = this.createdAt,
         priority = when (this.importance) {
             NetworkConstants.ServerPriorities.LOW -> Priority.LOW
             NetworkConstants.ServerPriorities.NORMAL -> Priority.NORMAL

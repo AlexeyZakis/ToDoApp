@@ -1,7 +1,7 @@
 package com.example.todoapp.data.network
 
+import android.util.Log
 import com.example.todoapp.BuildConfig
-import com.example.todoapp.data.network.constants.NetworkConstants
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -14,7 +14,8 @@ class AuthInterceptor : Interceptor {
         val newRequest = originalRequest.newBuilder()
             .header(
                 NetworkConstants.Headers.AUTHORIZATION,
-                "${NetworkConstants.TOKEN_TYPE} ${BuildConfig.API_TOKEN}"
+                "${NetworkConstants.TOKEN_TYPE} " +
+                        (System.getenv("API_TOKEN") ?: BuildConfig.API_TOKEN)
             )
             .build()
         return chain.proceed(newRequest)

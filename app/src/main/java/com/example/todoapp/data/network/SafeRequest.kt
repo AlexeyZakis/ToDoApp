@@ -1,7 +1,6 @@
 package com.example.todoapp.data.network
 
 import android.util.Log
-import com.example.todoapp.data.network.constants.NetworkConstants
 import com.example.todoapp.data.network.models.NetworkErrorCode
 import com.example.todoapp.data.network.models.NetworkResult
 import io.ktor.client.HttpClient

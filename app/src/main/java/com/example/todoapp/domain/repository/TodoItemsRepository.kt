@@ -13,10 +13,10 @@ interface TodoItemsRepository {
 
     fun changeDoneTaskVisibility(hideDoneTask: Boolean)
     suspend fun addTodoItem(todoItem: TodoItem): StorageResult<Nothing>
-    suspend fun deleteTodoItem(todoItemId: String): StorageResult<Nothing>
+    suspend fun deleteTodoItem(todoItem: TodoItem): StorageResult<Nothing>
     suspend fun editTodoItem(todoItem: TodoItem): StorageResult<Nothing>
     suspend fun getTodoItem(todoItemId: String): StorageResult<TodoItem>
-    suspend fun refreshData(): StorageResult<Nothing>
     fun destroy()
     fun setConnectedStatus(isConnected: Boolean)
+    suspend fun sync(): StorageResult<Nothing>
 }

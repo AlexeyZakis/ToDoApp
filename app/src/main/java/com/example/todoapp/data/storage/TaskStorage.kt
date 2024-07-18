@@ -10,5 +10,5 @@ interface TaskStorage {
     suspend fun getItem(id: String): StorageResult<TodoItem>
     suspend fun addItem(todoItem: TodoItem): StorageResult<Nothing>
     suspend fun updateItem(todoItem: TodoItem): StorageResult<Nothing>
-    suspend fun deleteItem(id: String): StorageResult<Nothing>
+    suspend fun deleteItem(todoItem: TodoItem): StorageResult<Nothing>
 }

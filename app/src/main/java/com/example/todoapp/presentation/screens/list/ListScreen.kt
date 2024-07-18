@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
-import com.example.todoapp.data.storage.disposableStorage.DisposableStorage
+import com.example.todoapp.data.storage.RuntimeStorage
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.presentation.screens.list.components.ListTitle
 import com.example.todoapp.presentation.screens.list.components.PullToRefreshLazyColumn
@@ -168,7 +168,7 @@ fun ListScreen(
 private fun ListScreenLightPreview() {
     val data: Items
     runBlocking {
-        data = Items(DisposableStorage().getList().data?.values?.toList() ?: listOf())
+        data = Items(RuntimeStorage().getList().data?.values?.toList() ?: listOf())
     }
     AppTheme(theme = MainTheme, darkTheme = false) {
         ListScreen(
@@ -185,7 +185,7 @@ private fun ListScreenLightPreview() {
 private fun ListScreenDarkPreview() {
     val data: Items
     runBlocking {
-        data = Items(DisposableStorage().getList().data?.values?.toList()?.subList(1, 5) ?: listOf())
+        data = Items(RuntimeStorage().getList().data?.values?.toList()?.subList(1, 5) ?: listOf())
     }
     AppTheme(theme = MainTheme, darkTheme = true) {
         ListScreen(
