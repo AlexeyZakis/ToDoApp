@@ -66,6 +66,10 @@ dependencies {
     // Room
     implementation(libs.bundles.room)
     kapt(libs.room.compiler)
+
+    implementation(libs.bundles.divKit)
+
+    implementation(project(":theme"))
 }
 
 kapt {

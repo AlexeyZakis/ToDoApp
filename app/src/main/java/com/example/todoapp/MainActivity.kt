@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -18,7 +19,10 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.todoapp.domain.repository.TodoItemsRepository
+import com.example.todoapp.presentation.MyApp
 import com.example.todoapp.presentation.constants.Constants
+import com.example.todoapp.presentation.data.LocalThemeRepository
+import com.example.todoapp.presentation.data.ThemeRepository
 import com.example.todoapp.presentation.screens.navigation.AppNavigation
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
@@ -31,6 +35,8 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var todoItemsRepository: TodoItemsRepository
+    @Inject
+    lateinit var themeRepository: ThemeRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +66,8 @@ class MainActivity : AppCompatActivity() {
         connectivityManager.requestNetwork(networkRequest, networkCallback)
 
         setContent {
-            AppTheme(MainTheme) {
-                AppNavigation()
+            CompositionLocalProvider(LocalThemeRepository provides themeRepository) {
+                MyApp()
             }
         }
     }

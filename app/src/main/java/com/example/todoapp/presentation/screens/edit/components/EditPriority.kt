@@ -2,6 +2,7 @@ package com.example.todoapp.presentation.screens.edit.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,10 +38,12 @@ fun EditPriority(
             stringResource(id = priorityToRId(priority))
         Text(
             text = stringResource(id = R.string.priorityTitle),
+            style = MaterialTheme.typography.bodyMedium,
             color = themeColors.labelPrimary
         )
         Text(
             text = priorityText,
+            style = MaterialTheme.typography.bodySmall,
             color = if (isHighPriority) {
                 themeColors.colorRed
             } else {

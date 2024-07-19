@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +53,10 @@ fun EditTopBar(
             ),
             modifier = Modifier.padding(end = 16.dp)
         ) {
-            Text(text = stringResource(R.string.save))
+            Text(
+                text = stringResource(R.string.save),
+                style = MaterialTheme.typography.titleLarge,
+            )
         }
     }
 }

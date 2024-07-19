@@ -31,6 +31,9 @@ hiltWork = "1.2.0"
 
 room = "2.6.1"
 
+divKit = "30.9.0"
+firebaseCrashlyticsBuildtools = "3.0.2"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
@@ -84,6 +87,13 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
+divKit-div = { group = "com.yandex.div", name = "div", version.ref = "divKit" }
+divKit-div-core = { group = "com.yandex.div", name = "div-core", version.ref = "divKit" }
+divKit-div-json = { group = "com.yandex.div", name = "div-json", version.ref = "divKit" }
+divKit-div-rive = { group = "com.yandex.div", name = "div-rive", version.ref = "divKit" }
+divKit-picasso = { group = "com.yandex.div", name = "picasso", version.ref = "divKit" }
+divKit-glide = { group = "com.yandex.div", name = "glide", version.ref = "divKit" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -120,4 +130,12 @@ compose = [
 room = [
     "room-runtime",
     "room-ktx",
+]
+divKit = [
+    "divKit-div",
+    "divKit-div-core",
+    "divKit-div-json",
+    "divKit-picasso",
+    "divKit-glide",
+    "divKit-div-rive",
 ]

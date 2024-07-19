@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,10 +47,12 @@ fun EditDeadline(
         Column {
             Text(
                 text = stringResource(id = R.string.taskDeadline),
+                style = MaterialTheme.typography.bodyLarge,
                 color = themeColors.labelPrimary,
             )
             Text(
                 text = DateFormat.getDateString(deadlineDate),
+                style = MaterialTheme.typography.bodyMedium,
                 color = themeColors.colorBlue,
                 modifier = Modifier.alpha(
                     if (hasDeadline) {

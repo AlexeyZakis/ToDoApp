@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.data.storage.RuntimeStorage
 import com.example.todoapp.domain.models.Items
+import com.example.todoapp.presentation.data.LocalThemeRepository
+import com.example.todoapp.presentation.data.models.ThemeMode
 import com.example.todoapp.presentation.screens.list.components.ListTitle
 import com.example.todoapp.presentation.screens.list.components.PullToRefreshLazyColumn
 import com.example.todoapp.presentation.themes.AppTheme
@@ -44,6 +46,7 @@ import kotlinx.coroutines.runBlocking
 fun ListScreen(
     screenState: ListScreenState,
     screenAction: (ListScreenAction, () -> Unit) -> Unit,
+    navigateToAboutApp: () -> Unit,
     navigateToNewItem: () -> Unit,
     navigateToEditItem: (String) -> Unit
 ) {
@@ -52,6 +55,9 @@ fun ListScreen(
 
     val context = LocalContext.current
     val snackBarHostState = remember { SnackbarHostState() }
+
+    val themeRepository = LocalThemeRepository.current
+    var themeType by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -65,6 +71,16 @@ fun ListScreen(
                     ListScreenAction.OnDoneTaskVisibilityChange(hideDoneTask)
                 ) {}
             },
+            onThemeClick = {
+                if (themeType) {
+                    themeRepository.setThemeMode(ThemeMode.LIGHT)
+                }
+                else {
+                    themeRepository.setThemeMode(ThemeMode.DARK)
+                }
+                themeType = !themeType
+            },//TODO : REPLACE
+            onAboutAppClick = navigateToAboutApp,
             modifier = Modifier
                 .padding(
                     top = 60.dp,
@@ -175,7 +191,8 @@ private fun ListScreenLightPreview() {
             ListScreenState(data),
             screenAction = { _, _ -> },
             navigateToNewItem = {},
-            navigateToEditItem = {}
+            navigateToEditItem = {},
+            navigateToAboutApp = {},
         )
     }
 }
@@ -192,7 +209,8 @@ private fun ListScreenDarkPreview() {
             ListScreenState(data),
             screenAction = { _, _ -> },
             navigateToNewItem = {},
-            navigateToEditItem = {}
+            navigateToEditItem = {},
+            navigateToAboutApp = {},
         )
     }
 }

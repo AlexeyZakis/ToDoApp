@@ -8,15 +8,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
 import com.example.todoapp.presentation.constants.Mode
+import com.example.todoapp.presentation.screens.BottomSheetEnum
 import com.example.todoapp.presentation.screens.edit.components.EditDeadline
 import com.example.todoapp.presentation.screens.edit.components.EditDeleteBtn
 import com.example.todoapp.presentation.screens.edit.components.EditDivider
@@ -33,7 +39,9 @@ import com.example.todoapp.presentation.screens.edit.components.EditTopBar
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
+import com.example.todoapp.presentation.utils.priorityToRId
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EditScreen(
     screenState: EditScreenState,
@@ -62,6 +70,19 @@ fun EditScreen(
         containerColor = themeColors.backPrimary
     ) { paddingValues ->
         val scrollState = rememberScrollState()
+//        val scope = rememberCoroutineScope()
+//        val sheetState: ModalBottomSheetState =
+//            rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+//        BottomSheetEnum(
+//            sheetState = sheetState,
+//            enumValues = Priority.entries.toTypedArray(),
+//            enumToStringResId = { priority -> priorityToRId(priority) },
+//            onEnumSelected = { _ ->  },
+//            enumDefaultValue = Priority.NORMAL,
+//            animationColorMap = mapOf(Priority.HIGH to themeColors.colorRed),
+//            animationDuration = 2000,
+//            defaultBackgroundColor = themeColors.colorWhite
+//        )
         Column(
             modifier = Modifier
                 .background(themeColors.backPrimary)
