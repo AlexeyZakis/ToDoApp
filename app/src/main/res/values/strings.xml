@@ -24,4 +24,7 @@
     <string name="deleteError">Не удалось удалить</string>
     <string name="addError">Не удалось добавить</string>
     <string name="editError">Не удалось изменить</string>
+    <string name="themeModeDark">Тёмная тема</string>
+    <string name="themeModeLight">Светлая тема</string>
+    <string name="themeModeSystem">Как в системе</string>
 </resources>

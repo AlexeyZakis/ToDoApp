@@ -25,14 +25,13 @@ import com.example.todoapp.presentation.utils.priorityToRId
 fun EditPriority(
     modifier: Modifier,
     priority: Priority,
-    screenAction: (EditScreenAction) -> Unit,
+    onClick: () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
     val isHighPriority = remember(priority) { priority == Priority.HIGH }
 
     Column(
         modifier = modifier
-            .clickable { expanded = !expanded }
+            .clickable { onClick() }
     ) {
         val priorityText = getPriorityEmoji(priority) +
             stringResource(id = priorityToRId(priority))
@@ -50,12 +49,6 @@ fun EditPriority(
                 themeColors.labelTertiary
             }
         )
-        PriorityDropdownMenu(
-            lastPriority = priority,
-            expanded = expanded,
-            onDismiss = { expanded = false },
-            screenAction = screenAction
-        )
     }
 }
 
@@ -65,7 +58,7 @@ private fun EditPriorityNormalPreview() {
     AppTheme(theme = MainTheme) {
         EditPriority(
             priority = Priority.NORMAL,
-            screenAction = {},
+            onClick = {},
             modifier = Modifier,
         )
     }
@@ -77,7 +70,7 @@ private fun EditPriorityLowPreview() {
     AppTheme(theme = MainTheme) {
         EditPriority(
             priority = Priority.LOW,
-            screenAction = {},
+            onClick = {},
             modifier = Modifier,
         )
     }
@@ -89,7 +82,7 @@ private fun EditPriorityHighPreview() {
     AppTheme(theme = MainTheme) {
         EditPriority(
             priority = Priority.HIGH,
-            screenAction = {},
+            onClick = {},
             modifier = Modifier,
         )
     }

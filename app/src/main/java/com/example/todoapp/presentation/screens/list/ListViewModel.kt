@@ -16,6 +16,8 @@ import com.example.todoapp.domain.usecase.GetIsDataLoadedSuccessfullyUseCase
 import com.example.todoapp.domain.usecase.GetItemListUseCase
 import com.example.todoapp.domain.usecase.GetNumberOfDoneTaskUseCase
 import com.example.todoapp.domain.usecase.SyncDataUseCase
+import com.example.todoapp.presentation.data.ThemeRepository
+import com.example.todoapp.presentation.data.models.ThemeMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +41,8 @@ class ListViewModel @Inject constructor(
     private val getIsDataLoadedSuccessfullyUseCase: GetIsDataLoadedSuccessfullyUseCase,
     private val destroyRepositoryUseCase: DestroyRepositoryUseCase,
     private val syncDataUseCase: SyncDataUseCase,
-    private val checkHasInternetUseCase: CheckHasInternetUseCase
+    private val checkHasInternetUseCase: CheckHasInternetUseCase,
+    private val themeRepository: ThemeRepository,
 ) : ViewModel() {
     private val _screenState = MutableStateFlow(ListScreenState())
     private val isConnectedStateFlow: StateFlow<Boolean> = checkHasInternetUseCase()
@@ -49,20 +52,22 @@ class ListViewModel @Inject constructor(
         getItemListUseCase(),
         checkIsDoneTaskHiddenUseCase(),
         getIsDataLoadedSuccessfullyUseCase(),
-    ) { state, items, hideDoneTask, isDataLoadedSuccessfully ->
+        themeRepository.themeMode,
+    ) { state, items, hideDoneTask, isDataLoadedSuccessfully, themeMode ->
         state.copy(
             todoItems = Items(
                 (
-                        if (hideDoneTask) {
-                            items.values.filter { !it.isDone }
-                        } else {
-                            items.values
-                        }
-                        ).toList()
+                    if (hideDoneTask) {
+                        items.values.filter { !it.isDone }
+                    } else {
+                        items.values
+                    }
+                ).toList()
             ),
             doneTaskCounter = getNumberOfDoneTaskUseCase(),
             hideDoneTask = hideDoneTask,
             isDataLoadedSuccessfully = isDataLoadedSuccessfully,
+            themeMode = themeMode
         )
     }.stateIn(
         viewModelScope,
@@ -86,6 +91,7 @@ class ListViewModel @Inject constructor(
             is ListScreenAction.OnDoneTaskVisibilityChange -> changeDoneTaskVisibility(action.hideDoneTask)
             is ListScreenAction.OnTodoItemDelete -> deleteTodoItem(action.todoItem)
             is ListScreenAction.OnRefreshData -> refreshData(callback)
+            is ListScreenAction.OnThemeChange -> themeChange(action.themeMode)
             is ListScreenAction.OnErrorSnackBarClick -> errorSnackBarClick()
             else -> {}
         }
@@ -122,6 +128,15 @@ class ListViewModel @Inject constructor(
                 onComplete()
             }
         }
+    }
+
+    private fun themeChange(themeMode: ThemeMode) {
+        _screenState.update {
+            screenState.value.copy(
+                themeMode = themeMode
+            )
+        }
+        themeRepository.setThemeMode(themeMode)
     }
 
     private fun errorSnackBarClick() {

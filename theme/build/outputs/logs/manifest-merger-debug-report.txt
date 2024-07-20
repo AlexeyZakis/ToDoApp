@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml:2:13-83
-INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml:2:13-83
+ADDED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml:2:13-83
+INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml:2:13-83
 	package
-		INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml
+		INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml
 	xmlns:android
-		ADDED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml:2:23-81
+		ADDED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml:2:23-81
 uses-sdk
-INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml reason: use-sdk injection requested
-INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml
-INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml
+INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml reason: use-sdk injection requested
+INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml
+INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml
 	android:targetSdkVersion
-		INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml
+		INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml
 	android:minSdkVersion
-		INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7138909619162696732.xml
+		INJECTED from /home/zakis/Code/AndroidStudio/ToDoApp/theme/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7536846279803865283.xml

@@ -6,4 +6,8 @@ object Emoji {
     const val ANCHOR = "⚓\uFE0F" // ⚓️
     const val DOUBLE_EXCLAMATION_MARK = "‼\uFE0F" // ‼️
     const val IMPORTANT_SIGN = "⚠\uFE0F" //⚠️
+
+    const val SUN = "☀\uFE0F" //☀️
+    const val MOON = "\uD83C\uDF19" //🌙
+    const val UFO = "\uD83D\uDEF8" //🛸
 }

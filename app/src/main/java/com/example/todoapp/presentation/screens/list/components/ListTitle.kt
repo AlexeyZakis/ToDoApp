@@ -60,7 +60,7 @@ fun ListTitle(
             ListHideDoneTaskSwitch(
                 hideDoneTask = hideDoneTask,
                 onClick = { onVisibilitySwitchClick(!hideDoneTask) },
-                modifier = Modifier.padding(end = 24.dp)
+                modifier = Modifier.padding(end = 12.dp)
             )
         }
     }

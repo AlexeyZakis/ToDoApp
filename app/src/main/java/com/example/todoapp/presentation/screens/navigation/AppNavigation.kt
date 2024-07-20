@@ -1,5 +1,9 @@
 package com.example.todoapp.presentation.screens.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,7 +27,13 @@ fun AppNavigation() {
         navController = navController,
         startDestination = ListRoute.route
     ) {
-        composable(route = ListRoute.route) {
+        composable(
+            route = ListRoute.route,
+            enterTransition = { fadeIn() + slideInHorizontally(initialOffsetX = { it }) },
+            exitTransition = { fadeOut() + slideOutHorizontally(targetOffsetX = { -it }) },
+            popEnterTransition = { fadeIn() + slideInHorizontally(initialOffsetX = { it }) },
+            popExitTransition = { fadeOut() + slideOutHorizontally(targetOffsetX = { -it }) }
+        ) {
             val listViewModel: ListViewModel = hiltViewModel()
             val listScreenState by listViewModel.screenState.collectAsState()
             ListScreen(
@@ -38,7 +48,14 @@ fun AppNavigation() {
                 }
             )
         }
-        composable(route = EditRoute.route, arguments = EditRoute.arguments) {
+        composable(
+            route = EditRoute.route,
+            arguments = EditRoute.arguments,
+            enterTransition = { fadeIn() + slideInHorizontally(initialOffsetX = { it }) },
+            exitTransition = { fadeOut() + slideOutHorizontally(targetOffsetX = { -it }) },
+            popEnterTransition = { fadeIn() + slideInHorizontally(initialOffsetX = { it }) },
+            popExitTransition = { fadeOut() + slideOutHorizontally(targetOffsetX = { -it }) }
+        ) {
             val editViewModel: EditViewModel = hiltViewModel()
             val editScreenState by editViewModel.screenState.collectAsState()
             EditScreen(
@@ -53,7 +70,13 @@ fun AppNavigation() {
                 }
             )
         }
-        composable(route = AboutAppRoute.route) {
+        composable(
+            route = AboutAppRoute.route,
+            enterTransition = { fadeIn() + slideInHorizontally(initialOffsetX = { it }) },
+            exitTransition = { fadeOut() + slideOutHorizontally(targetOffsetX = { -it }) },
+            popEnterTransition = { fadeIn() + slideInHorizontally(initialOffsetX = { it }) },
+            popExitTransition = { fadeOut() + slideOutHorizontally(targetOffsetX = { -it }) }
+        ) {
             AboutAppScreen(
                 navigateBack = {
                     navController.navigate(ListRoute.route) {
