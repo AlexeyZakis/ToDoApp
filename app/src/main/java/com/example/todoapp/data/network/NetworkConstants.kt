@@ -15,10 +15,12 @@ object NetworkConstants {
         const val FAILS = "X-Generate-Fails"
         const val AUTHORIZATION = "Authorization"
     }
+
     object Wrappers {
         const val ELEMENT = "element"
         const val LIST = "list"
     }
+
     object ServerPriorities {
         const val LOW = "low"
         const val NORMAL = "basic"

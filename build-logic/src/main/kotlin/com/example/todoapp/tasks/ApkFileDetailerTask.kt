@@ -1,7 +1,6 @@
 package com.example.todoapp.tasks
 
 import com.example.todoapp.api.TelegramApi
-import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty

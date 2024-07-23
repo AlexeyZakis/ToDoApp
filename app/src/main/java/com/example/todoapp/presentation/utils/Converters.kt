@@ -13,7 +13,7 @@ fun priorityToRId(priority: Priority): Int {
     }
 }
 
-fun getPriorityEmoji(priority: Priority) = when(priority) {
+fun getPriorityEmoji(priority: Priority) = when (priority) {
     Priority.HIGH -> Constants.CRITICAL_PRIORITY_TASK_EMOJI
     Priority.LOW -> Constants.LOW_PRIORITY_TASK_EMOJI
     else -> ""
@@ -27,7 +27,7 @@ fun themeModeToRId(themeMode: ThemeMode): Int {
     }
 }
 
-fun getThemeModeEmoji(themeMode: ThemeMode) = when(themeMode) {
+fun getThemeModeEmoji(themeMode: ThemeMode) = when (themeMode) {
     ThemeMode.DARK -> Constants.DARK_THEME_EMOJI
     ThemeMode.LIGHT -> Constants.LIGHT_THEME_EMOJI
     ThemeMode.SYSTEM -> Constants.SYSTEM_THEME_EMOJI

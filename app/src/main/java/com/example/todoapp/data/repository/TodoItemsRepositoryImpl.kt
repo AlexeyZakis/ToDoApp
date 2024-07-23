@@ -5,8 +5,6 @@ import com.example.todoapp.data.db.addedItems.AddedItemDao
 import com.example.todoapp.data.db.addedItems.AddedItemDb
 import com.example.todoapp.data.db.deletedItems.DeletedItemDao
 import com.example.todoapp.data.db.deletedItems.DeletedItemDb
-import com.example.todoapp.data.db.todoItems.toTodoItemsDb
-import com.example.todoapp.data.network.Network
 import com.example.todoapp.data.network.NetworkConstants
 import com.example.todoapp.data.storage.TaskStorage
 import com.example.todoapp.data.storage.models.StorageResult
@@ -96,7 +94,8 @@ class TodoItemsRepositoryImpl(
         withContext(Dispatchers.IO) {
             val localStorageResponse = localStorage.addItem(todoItem)
             addedItemDao.insertItem(
-                AddedItemDb(todoItem.id, todoItem.modificationDate
+                AddedItemDb(
+                    todoItem.id, todoItem.modificationDate
                 )
             )
             addOrEditItem(todoItem)
@@ -112,7 +111,8 @@ class TodoItemsRepositoryImpl(
         withContext(Dispatchers.IO) {
             val localStorageResponse = localStorage.deleteItem(todoItem)
             deletedItemDao.insertItem(
-                DeletedItemDb(todoItem.id, todoItem.modificationDate
+                DeletedItemDb(
+                    todoItem.id, todoItem.modificationDate
                 )
             )
             _todoItems.update {
@@ -182,9 +182,12 @@ class TodoItemsRepositoryImpl(
             val serverDataSet = serverData.values.toSet()
             val localDataSet = localData.values.toSet()
 
-            val localExtraData = localDataSet.minusWithComparator(serverDataSet, TodoItem.idComparator)
-            val serverExtraData = serverDataSet.minusWithComparator(localDataSet, TodoItem.idComparator)
-            val mutualData = localDataSet.intersectWithComparator(serverDataSet, TodoItem.idComparator)
+            val localExtraData =
+                localDataSet.minusWithComparator(serverDataSet, TodoItem.idComparator)
+            val serverExtraData =
+                serverDataSet.minusWithComparator(localDataSet, TodoItem.idComparator)
+            val mutualData =
+                localDataSet.intersectWithComparator(serverDataSet, TodoItem.idComparator)
 
             Log.d(RepositoryConstants.DEBUG, "serverData\n$serverData")
             Log.d(RepositoryConstants.DEBUG, "localData\n$localData")
@@ -194,9 +197,25 @@ class TodoItemsRepositoryImpl(
             Log.d(RepositoryConstants.DEBUG, "mutualData\n$mutualData")
             Log.v(RepositoryConstants.DEBUG, "_____________________")
 
-            if (SyncHandler.localExtraDataHandle(networkStorage, localStorage, localExtraData, localAddedItems) ||
-                SyncHandler.serverExtraDataHandle(networkStorage, localStorage, serverExtraData, localDeletedItems) ||
-                SyncHandler.mutualDataHandle(networkStorage, localStorage, mutualData, serverData, localData)
+            if (SyncHandler.localExtraDataHandle(
+                    networkStorage,
+                    localStorage,
+                    localExtraData,
+                    localAddedItems
+                ) ||
+                SyncHandler.serverExtraDataHandle(
+                    networkStorage,
+                    localStorage,
+                    serverExtraData,
+                    localDeletedItems
+                ) ||
+                SyncHandler.mutualDataHandle(
+                    networkStorage,
+                    localStorage,
+                    mutualData,
+                    serverData,
+                    localData
+                )
             ) {
                 Log.e(RepositoryConstants.DEBUG, "Sync error")
 

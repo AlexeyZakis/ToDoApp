@@ -39,7 +39,11 @@ class TelegramApi(
         }
     }
 
-    suspend fun sendMessage(message: String, tgBotToken: String, tgUserChatId: String): HttpResponse {
+    suspend fun sendMessage(
+        message: String,
+        tgBotToken: String,
+        tgUserChatId: String
+    ): HttpResponse {
         return httpClient.post("$BASE_URL/bot$tgBotToken/sendMessage") {
             parameter("chat_id", tgUserChatId)
             parameter("text", message)

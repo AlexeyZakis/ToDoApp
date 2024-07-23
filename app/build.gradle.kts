@@ -15,7 +15,6 @@ tgReporter {
     apkName.set("todolist")
 
     enableApkSizeValidator.set(true)
-    maxApkSizeMB.set(16)
 
     enableApkDetailer.set(true)
 }

@@ -29,6 +29,7 @@ private object PriorityDbConverter {
         Priority.NORMAL -> 1
         Priority.LOW -> 2
     }
+
     fun toItem(priority: Int): Priority = when (priority) {
         0 -> Priority.HIGH
         1 -> Priority.NORMAL

@@ -29,14 +29,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
 import com.example.todoapp.presentation.constants.Mode
-import com.example.todoapp.presentation.screens.BottomSheetEnum
+import com.example.todoapp.presentation.screens.BottomSheet
 import com.example.todoapp.presentation.screens.edit.components.EditDeadline
 import com.example.todoapp.presentation.screens.edit.components.EditDeleteBtn
 import com.example.todoapp.presentation.screens.edit.components.EditDivider
@@ -81,21 +80,21 @@ fun EditScreen(
     val scope = rememberCoroutineScope()
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    BottomSheetEnum(
+    BottomSheet(
         sheetState = sheetState,
-        enumValues = Priority.entries.toTypedArray(),
-        enumToStringResId = { priority -> priorityToRId(priority) },
-        enumSelected = screenState.priority,
-        onEnumSelected = { priority ->
+        values = Priority.entries.toTypedArray(),
+        valueToStringResId = { priority -> priorityToRId(priority) },
+        selected = screenState.priority,
+        onSelected = { priority ->
             if (priority == Priority.HIGH) {
                 animate = true
             }
             screenAction(EditScreenAction.OnPrioritySelect(priority))
         },
-        enumMapColors = mapOf(
+        valueMapColors = mapOf(
             Priority.HIGH to themeColors.colorRed
         ),
-        enumMapPrefix = mapOf(
+        valueMapPrefix = mapOf(
             Priority.LOW to getPriorityEmoji(Priority.LOW),
             Priority.HIGH to getPriorityEmoji(Priority.HIGH),
         )

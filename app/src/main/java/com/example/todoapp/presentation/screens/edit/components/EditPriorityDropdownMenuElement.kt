@@ -34,7 +34,7 @@ fun EditPriorityDropdownMenuElement(
         else -> themeColors.labelPrimary
     }
     val priorityText = getPriorityEmoji(priority) +
-        stringResource(id = priorityToRId(priority))
+            stringResource(id = priorityToRId(priority))
     Box(
         modifier = Modifier
             .fillMaxWidth()

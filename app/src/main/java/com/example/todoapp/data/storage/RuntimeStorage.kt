@@ -18,34 +18,155 @@ class RuntimeStorage : TaskStorage {
     init {
         items.putAll(
             listOf(
-                TodoItem(taskText = randText, priority = Priority.LOW, isDone = false, deadlineDate = null),
-                TodoItem(taskText = randText, priority = Priority.LOW, isDone = false, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randText, priority = Priority.LOW, isDone = true, deadlineDate = null),
-                TodoItem(taskText = randText, priority = Priority.LOW, isDone = true, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randText, priority = Priority.NORMAL, isDone = false, deadlineDate = null),
-                TodoItem(taskText = randText, priority = Priority.NORMAL, isDone = false, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randText, priority = Priority.NORMAL, isDone = true, deadlineDate = null),
-                TodoItem(taskText = randText, priority = Priority.NORMAL, isDone = true, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randText, priority = Priority.HIGH, isDone = false, deadlineDate = null),
-                TodoItem(taskText = randText, priority = Priority.HIGH, isDone = false, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randText, priority = Priority.HIGH, isDone = true, deadlineDate = null),
-                TodoItem(taskText = randText, priority = Priority.HIGH, isDone = true, deadlineDate = System.currentTimeMillis()),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.LOW,
+                    isDone = false,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.LOW,
+                    isDone = false,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.LOW,
+                    isDone = true,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.LOW,
+                    isDone = true,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.NORMAL,
+                    isDone = false,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.NORMAL,
+                    isDone = false,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.NORMAL,
+                    isDone = true,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.NORMAL,
+                    isDone = true,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.HIGH,
+                    isDone = false,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.HIGH,
+                    isDone = false,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.HIGH,
+                    isDone = true,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randText,
+                    priority = Priority.HIGH,
+                    isDone = true,
+                    deadlineDate = System.currentTimeMillis()
+                ),
 
-                TodoItem(taskText = randBigText, priority = Priority.LOW, isDone = false, deadlineDate = null),
-                TodoItem(taskText = randBigText, priority = Priority.LOW, isDone = false, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randBigText, priority = Priority.LOW, isDone = true, deadlineDate = null),
-                TodoItem(taskText = randBigText, priority = Priority.LOW, isDone = true, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randBigText, priority = Priority.NORMAL, isDone = false, deadlineDate = null),
-                TodoItem(taskText = randBigText, priority = Priority.NORMAL, isDone = false, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randBigText, priority = Priority.NORMAL, isDone = true, deadlineDate = null),
-                TodoItem(taskText = randBigText, priority = Priority.NORMAL, isDone = true, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randBigText, priority = Priority.HIGH, isDone = false, deadlineDate = null),
-                TodoItem(taskText = randBigText, priority = Priority.HIGH, isDone = false, deadlineDate = System.currentTimeMillis()),
-                TodoItem(taskText = randBigText, priority = Priority.HIGH, isDone = true, deadlineDate = null),
-                TodoItem(taskText = randBigText, priority = Priority.HIGH, isDone = true, deadlineDate = System.currentTimeMillis()),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.LOW,
+                    isDone = false,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.LOW,
+                    isDone = false,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.LOW,
+                    isDone = true,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.LOW,
+                    isDone = true,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.NORMAL,
+                    isDone = false,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.NORMAL,
+                    isDone = false,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.NORMAL,
+                    isDone = true,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.NORMAL,
+                    isDone = true,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.HIGH,
+                    isDone = false,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.HIGH,
+                    isDone = false,
+                    deadlineDate = System.currentTimeMillis()
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.HIGH,
+                    isDone = true,
+                    deadlineDate = null
+                ),
+                TodoItem(
+                    taskText = randBigText,
+                    priority = Priority.HIGH,
+                    isDone = true,
+                    deadlineDate = System.currentTimeMillis()
+                ),
             ).associateBy { it.id }
         )
     }
+
     override suspend fun getList(): StorageResult<Map<String, TodoItem>> {
         return StorageResult(
             status = StorageResultStatus.SUCCESS,

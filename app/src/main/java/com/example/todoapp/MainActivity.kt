@@ -23,9 +23,6 @@ import com.example.todoapp.presentation.MyApp
 import com.example.todoapp.presentation.constants.Constants
 import com.example.todoapp.presentation.data.LocalThemeRepository
 import com.example.todoapp.presentation.data.ThemeRepository
-import com.example.todoapp.presentation.screens.navigation.AppNavigation
-import com.example.todoapp.presentation.themes.AppTheme
-import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.workers.UpdateDataWorker
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
@@ -35,6 +32,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var todoItemsRepository: TodoItemsRepository
+
     @Inject
     lateinit var themeRepository: ThemeRepository
 
@@ -55,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(Constants.CONNECTIVITY_DEBUG, "Connected to Internet")
                 todoItemsRepository.setConnectedStatus(isConnected = true)
             }
+
             override fun onLost(network: Network) {
                 super.onLost(network)
                 Log.d(Constants.CONNECTIVITY_DEBUG, "Disconnected from Internet")
@@ -62,7 +61,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val connectivityManager = getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        val connectivityManager =
+            getSystemService(ConnectivityManager::class.java) as ConnectivityManager
         connectivityManager.requestNetwork(networkRequest, networkCallback)
 
         setContent {

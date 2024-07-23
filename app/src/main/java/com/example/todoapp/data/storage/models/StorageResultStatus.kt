@@ -4,5 +4,6 @@ enum class StorageResultStatus {
     SUCCESS,
     ERROR,
     ;
+
     fun isSuccess() = this == SUCCESS
 }

@@ -22,8 +22,8 @@ import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 fun AppTheme(
     theme: Theme,
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit)
-{
+    content: @Composable () -> Unit
+) {
     val themeColors = if (darkTheme) {
         ColorNames(
             supportSeparator = theme.darkSupportSeparator,
@@ -42,8 +42,7 @@ fun AppTheme(
             backSecondary = theme.darkBackSecondary,
             backElevated = theme.darkBackElevated,
         )
-    }
-    else {
+    } else {
         ColorNames(
             supportSeparator = theme.lightSupportSeparator,
             supportOverlay = theme.lightSupportOverlay,
@@ -79,8 +78,7 @@ fun AppTheme(
                     onSurface = theme.darkWhite,
                     onError = Color.Black,
                 )
-            }
-            else {
+            } else {
                 lightColors(
                     primary = theme.lightLabelPrimary,
                     primaryVariant = theme.lightLabelPrimary,
@@ -324,10 +322,9 @@ private fun ColorPreviewElement(
     modifier: Modifier = Modifier,
     isTextColorDark: Boolean = true
 ) {
-    val textColor = if(isTextColorDark) {
+    val textColor = if (isTextColorDark) {
         Color.Black
-    }
-    else {
+    } else {
         Color.White
     }
     Column(
@@ -338,11 +335,13 @@ private fun ColorPreviewElement(
         Text(
             text = colorName,
             color = textColor,
-            modifier = Modifier.padding(start = 8.dp, top = 40.dp))
+            modifier = Modifier.padding(start = 8.dp, top = 40.dp)
+        )
         Text(
             text = colorToHex(colorValue),
             color = textColor,
-            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, end = 8.dp))
+            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, end = 8.dp)
+        )
     }
 }
 

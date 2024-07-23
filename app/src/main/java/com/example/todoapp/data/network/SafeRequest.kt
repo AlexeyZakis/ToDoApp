@@ -21,7 +21,7 @@ import kotlinx.serialization.SerializationException
 import okio.IOException
 import java.net.UnknownHostException
 
-suspend inline fun <reified T, reified E>HttpClient.safeRequest(
+suspend inline fun <reified T, reified E> HttpClient.safeRequest(
     host: String = NetworkConstants.HOST,
     path: String = "",
     headers: Map<String, String> = emptyMap(),

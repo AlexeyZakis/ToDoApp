@@ -3,7 +3,6 @@ package conventions
 import AndroidConst
 import android
 import baseAndroidConfig
-import org.gradle.kotlin.dsl.dependencies
 
 plugins {
     id("com.android.library")

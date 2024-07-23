@@ -3,14 +3,7 @@ package conventions
 import AndroidConst
 import baseAndroidConfig
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import gradle.kotlin.dsl.accessors._ffe51ee91362977ddc98906f5440a003.androidTestImplementation
-import gradle.kotlin.dsl.accessors._ffe51ee91362977ddc98906f5440a003.debugImplementation
-import gradle.kotlin.dsl.accessors._ffe51ee91362977ddc98906f5440a003.implementation
-import gradle.kotlin.dsl.accessors._ffe51ee91362977ddc98906f5440a003.kapt
-import gradle.kotlin.dsl.accessors._ffe51ee91362977ddc98906f5440a003.testImplementation
 import libs
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 
 plugins {
     id("com.android.application")
