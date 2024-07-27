@@ -1,6 +1,6 @@
 package com.example.todoapp.data.storage
 
-import com.example.todoapp.data.network.Network
+import com.example.todoapp.data.network.NetworkApi
 import com.example.todoapp.data.network.NetworkConstants
 import com.example.todoapp.data.network.dtos.ResponseDto
 import com.example.todoapp.data.network.toTodoItem
@@ -12,9 +12,9 @@ import com.example.todoapp.domain.models.TodoItem
 /**
  * Provide access to data on the server
  **/
-class NetworkStorage : TaskStorage {
+class NetworkStorage(private val networkApi: NetworkApi) : TaskStorage {
     override suspend fun getList(): StorageResult<Map<String, TodoItem>> {
-        val networkResult = Network.getList()
+        val networkResult = networkApi.getList()
 
         if (isError(networkResult)) {
             return StorageResult(
@@ -33,7 +33,7 @@ class NetworkStorage : TaskStorage {
     }
 
     override suspend fun updateList(items: Items): StorageResult<Nothing> {
-        val networkResult = Network.updateList(items)
+        val networkResult = networkApi.updateList(items)
         if (isError(networkResult)) {
             return StorageResult(
                 status = StorageResultStatus.ERROR,
@@ -47,7 +47,7 @@ class NetworkStorage : TaskStorage {
     }
 
     override suspend fun getItem(id: String): StorageResult<TodoItem> {
-        val networkResult = Network.getItem(id)
+        val networkResult = networkApi.getItem(id)
         if (isError(networkResult)) {
             return StorageResult(
                 status = StorageResultStatus.ERROR,
@@ -61,7 +61,7 @@ class NetworkStorage : TaskStorage {
     }
 
     override suspend fun addItem(todoItem: TodoItem): StorageResult<Nothing> {
-        val networkResult = Network.addItem(todoItem)
+        val networkResult = networkApi.addItem(todoItem)
         if (isError(networkResult)) {
             return StorageResult(
                 status = StorageResultStatus.ERROR,
@@ -75,7 +75,7 @@ class NetworkStorage : TaskStorage {
     }
 
     override suspend fun updateItem(todoItem: TodoItem): StorageResult<Nothing> {
-        val networkResult = Network.updateItem(todoItem)
+        val networkResult = networkApi.updateItem(todoItem)
         if (isError(networkResult)) {
             return StorageResult(
                 status = StorageResultStatus.ERROR,
@@ -89,7 +89,7 @@ class NetworkStorage : TaskStorage {
     }
 
     override suspend fun deleteItem(todoItem: TodoItem): StorageResult<Nothing> {
-        val networkResult = Network.deleteItem(todoItem)
+        val networkResult = networkApi.deleteItem(todoItem)
         if (isError(networkResult)) {
             return StorageResult(
                 status = StorageResultStatus.ERROR,

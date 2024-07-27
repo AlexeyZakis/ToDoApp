@@ -27,7 +27,10 @@ fun EditPriority(
 
     Column(
         modifier = modifier
-            .clickable { onClick() }
+            .clickable(
+                onClickLabel =
+                stringResource(id = R.string.changePriorityActionDescription)
+            ) { onClick() }
     ) {
         val priorityText = getPriorityEmoji(priority) +
             stringResource(id = priorityToRId(priority))

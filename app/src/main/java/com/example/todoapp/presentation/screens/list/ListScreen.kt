@@ -30,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,15 +71,15 @@ fun ListScreen(
         values = ThemeMode.entries.toTypedArray(),
         valueToStringResId = { themeMode -> themeModeToRId(themeMode) },
         selected = screenState.themeMode,
-        onSelected = { themeMode ->
+        onSelect = { themeMode ->
             screenAction(ListScreenAction.OnThemeChange(themeMode)) {}
         },
-        valueMapColors = mapOf(
+        valueColors = mapOf(
             ThemeMode.DARK to themeColors.colorBlue,
             ThemeMode.LIGHT to themeColors.colorGreen,
             ThemeMode.SYSTEM to themeColors.colorGray,
         ),
-        valueMapPrefix = mapOf(
+        valuePrefix = mapOf(
             ThemeMode.DARK to getThemeModeEmoji(ThemeMode.DARK),
             ThemeMode.LIGHT to getThemeModeEmoji(ThemeMode.LIGHT),
             ThemeMode.SYSTEM to getThemeModeEmoji(ThemeMode.SYSTEM),
@@ -128,6 +129,8 @@ fun ListScreen(
                         containerColor = themeColors.colorBlue,
                         contentColor = themeColors.colorWhite,
                         shape = CircleShape,
+                        modifier = Modifier
+                            .testTag("addTodoItemBtn")
                     ) {
                         Icon(
                             Icons.Rounded.Add,

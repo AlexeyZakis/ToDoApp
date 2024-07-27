@@ -32,7 +32,10 @@ hiltWork = "1.2.0"
 room = "2.6.1"
 
 divKit = "30.9.0"
-firebaseCrashlyticsBuildtools = "3.0.2"
+
+androidxTracing = "1.1.0"
+mockwebserver = "5.0.0-alpha.2"
+mockk = "1.10.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -93,6 +96,12 @@ divKit-div-json = { group = "com.yandex.div", name = "div-json", version.ref = "
 divKit-div-rive = { group = "com.yandex.div", name = "div-rive", version.ref = "divKit" }
 divKit-picasso = { group = "com.yandex.div", name = "picasso", version.ref = "divKit" }
 divKit-glide = { group = "com.yandex.div", name = "glide", version.ref = "divKit" }
+
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktorClient" }
+androidx-tracing = { group = "androidx.tracing", name = "tracing", version.ref = "androidxTracing" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver3", version.ref = "mockwebserver" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

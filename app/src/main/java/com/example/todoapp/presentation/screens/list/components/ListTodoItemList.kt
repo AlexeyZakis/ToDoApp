@@ -14,7 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
@@ -24,6 +27,7 @@ import com.example.todoapp.domain.models.TodoItem
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
+import com.example.todoapp.presentation.utils.DateFormat
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -36,6 +40,7 @@ fun ListTodoItemList(
     onDeleteItem: (TodoItem) -> Unit,
     onAddNewItemClick: () -> Unit,
 ) {
+    val addTaskActionDescription = stringResource(id = R.string.addTaskActionDescription)
     LazyColumn(
         state = lazyListState,
         modifier = modifier
@@ -46,7 +51,8 @@ fun ListTodoItemList(
             ListTodoItem(
                 todoItem = todoItem,
                 onCheckboxClick = { onCompletionChange(todoItem) },
-                onItemClick = { onItemClick(todoItem) }
+                onItemClick = { onItemClick(todoItem) },
+                modifier = Modifier.testTag("todoItem")
             )
         }
         item {
@@ -56,8 +62,13 @@ fun ListTodoItemList(
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onAddNewItemClick() }
+                    .clickable(
+                        onClickLabel = addTaskActionDescription
+                    ) { onAddNewItemClick() }
                     .padding(start = 42.dp, top = 8.dp, bottom = 8.dp)
+                    .clearAndSetSemantics {
+                        contentDescription = addTaskActionDescription
+                    }
             )
         }
     }

@@ -12,11 +12,9 @@
     <string name="priorityNormal">Нет</string>
     <string name="priorityLow">Не важно</string>
     <string name="taskDeadline">Сделать до</string>
-    <string name="infoBtnDescription">Инфо</string>
     <string name="closeBtnDescription">Закрыть</string>
-    <string name="hideDoneTaskBtnDescription">Скрыть выполненые</string>
-    <string name="deleteBtnDescription">Удалить</string>
-    <string name="floatingAddActionButtonDescription">Добавить</string>
+    <string name="deleteBtnDescription">Удалить задачу</string>
+    <string name="floatingAddActionButtonDescription">Добавить задачу</string>
     <string name="calendarOk">Ок</string>
     <string name="calendarCancel">Отмена</string>
     <string name="retry">Повторить</string>
@@ -27,4 +25,21 @@
     <string name="themeModeDark">Тёмная тема</string>
     <string name="themeModeLight">Светлая тема</string>
     <string name="themeModeSystem">Как в системе</string>
+    <string name="hideDoneTaskBtnDescription">Скрыть выполненые задачи</string>
+    <string name="changeThemeBtnDescription">Изменить тему приложения</string>
+    <string name="aboutAppBtnDescription">Информация о приложении</string>
+    <string name="taskDoneDescription">Задача выполнена</string>
+    <string name="taskUndoneDescription">Задача не выполнена</string>
+    <string name="undoneTaskDeadlineDescription">Сделать до</string>
+    <string name="todoItemDoubleClickActionDescription">Изменить задачу</string>
+    <string name="doneTaskCheckboxClickDescription">Отменить выполнение задачи</string>
+    <string name="undoneTaskCheckboxClickDescription">Выполнить задачу</string>
+    <string name="noDeadlineTaskDescription">Нет дедлайна</string>
+    <string name="withDeadlineTaskDescription">Выполнить задачу до</string>
+    <string name="changeDeadlineActionDescription">Изменить дедлайн</string>
+    <string name="hasDeadlineClickDescription">Убрать дедлайн</string>
+    <string name="hasNotDeadlineClickDescription">Добавить дедлайн</string>
+    <string name="changePriorityActionDescription">Изменить важность задачи</string>
+    <string name="addTaskActionDescription">Добавить задачу</string>
+    <string name="buttonDisabledDescription">Кнопка отключена</string>
 </resources>

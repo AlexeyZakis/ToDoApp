@@ -42,10 +42,10 @@ fun <T> BottomSheet(
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
     values: Array<T>,
     valueToStringResId: (T) -> Int,
-    onSelected: (T) -> Unit,
+    onSelect: (T) -> Unit,
     selected: T,
-    valueMapColors: Map<T, Color> = mapOf(),
-    valueMapPrefix: Map<T, String> = mapOf(),
+    valueColors: Map<T, Color> = mapOf(),
+    valuePrefix: Map<T, String> = mapOf(),
     content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -66,14 +66,14 @@ fun <T> BottomSheet(
                         themeColors.backPrimary
                     }
                     Text(
-                        color = valueMapColors[enumValue] ?: themeColors.labelPrimary,
+                        color = valueColors[enumValue] ?: themeColors.labelPrimary,
                         style = MaterialTheme.typography.titleLarge,
-                        text = (valueMapPrefix[enumValue] ?: "") +
+                        text = (valuePrefix[enumValue] ?: "") +
                                 stringResource(id = valueToStringResId(enumValue)),
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                onSelected(enumValue)
+                                onSelect(enumValue)
                                 scope.launch {
                                     sheetState.hide()
                                 }
@@ -104,16 +104,16 @@ private fun BottomSheetPreview() {
             values = Priority.entries.toTypedArray(),
             valueToStringResId = { priority -> priorityToRId(priority) },
             selected = selectedPriority,
-            onSelected = { priority ->
+            onSelect = { priority ->
                 run {
                     selectedPriority = priority
                     text = priority.name
                 }
             },
-            valueMapColors = mapOf(
+            valueColors = mapOf(
                 Priority.HIGH to themeColors.colorRed
             ),
-            valueMapPrefix = mapOf(
+            valuePrefix = mapOf(
                 Priority.LOW to getPriorityEmoji(Priority.LOW),
                 Priority.HIGH to getPriorityEmoji(Priority.HIGH),
             )

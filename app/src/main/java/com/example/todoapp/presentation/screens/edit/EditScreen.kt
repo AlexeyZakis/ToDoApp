@@ -30,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
@@ -85,16 +86,16 @@ fun EditScreen(
         values = Priority.entries.toTypedArray(),
         valueToStringResId = { priority -> priorityToRId(priority) },
         selected = screenState.priority,
-        onSelected = { priority ->
+        onSelect = { priority ->
             if (priority == Priority.HIGH) {
                 animate = true
             }
             screenAction(EditScreenAction.OnPrioritySelect(priority))
         },
-        valueMapColors = mapOf(
+        valueColors = mapOf(
             Priority.HIGH to themeColors.colorRed
         ),
-        valueMapPrefix = mapOf(
+        valuePrefix = mapOf(
             Priority.LOW to getPriorityEmoji(Priority.LOW),
             Priority.HIGH to getPriorityEmoji(Priority.HIGH),
         )
@@ -129,7 +130,10 @@ fun EditScreen(
                 EditTaskText(
                     text = screenState.text,
                     screenAction = screenAction,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .testTag("todoItemEditText")
+                    ,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 EditPriority(
@@ -155,6 +159,7 @@ fun EditScreen(
                 EditDeleteBtn(
                     enabled = screenState.mode == Mode.EDIT_ITEM,
                     screenAction = screenAction,
+                    modifier = Modifier.testTag("deleteBtn")
                 )
             }
         }

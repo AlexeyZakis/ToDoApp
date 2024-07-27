@@ -8,14 +8,20 @@ import com.example.todoapp.data.network.dtos.ResponseDto
 import com.example.todoapp.data.network.models.NetworkResult
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
+import io.ktor.client.HttpClient
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 
 /**
  * Network request API
  **/
-object Network {
+class NetworkApi(
+    val client: HttpClient,
+    val json: Json,
+    val deviceId: String,
+) {
     private var lastKnownRevision = 0
 
     suspend fun getList(): ListDto? {
