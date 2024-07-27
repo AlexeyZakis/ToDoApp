@@ -42,6 +42,7 @@ import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
 import com.example.todoapp.presentation.utils.DateFormat
+import com.example.todoapp.presentation.utils.priorityToRId
 
 @Composable
 fun ListTodoItem(
@@ -61,6 +62,8 @@ fun ListTodoItem(
     val taskDoneDescription = stringResource(id = R.string.taskDoneDescription)
     val taskUndoneDescription = stringResource(id = R.string.taskUndoneDescription)
     val undoneTaskDeadlineDescription = stringResource(id = R.string.undoneTaskDeadlineDescription)
+    val todoItemPriorityDescription = stringResource(id = R.string.todoItemPriorityDescription)
+    val todoItemPriority = stringResource(id = priorityToRId(todoItem.priority))
 
     val doneTaskCheckboxClickDescription = stringResource(id = R.string.doneTaskCheckboxClickDescription)
     val undoneTaskCheckboxClickDescription = stringResource(id = R.string.undoneTaskCheckboxClickDescription)
@@ -72,7 +75,7 @@ fun ListTodoItem(
                 stringResource(id = R.string.todoItemDoubleClickActionDescription)
             ) { onItemClick() }
             .clearAndSetSemantics {
-                contentDescription = "${todoItem.taskText}. ${
+                contentDescription = "${todoItem.taskText}. $todoItemPriorityDescription $todoItemPriority. ${
                     if (todoItem.isDone) taskDoneDescription else "$taskUndoneDescription. ${
                         todoItem.deadlineDate?.let {
                             "$undoneTaskDeadlineDescription ${

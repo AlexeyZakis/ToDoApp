@@ -8,9 +8,9 @@
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
     <string name="taskTextHint">Что надо сделать…</string>
-    <string name="priorityHigh">Важно</string>
-    <string name="priorityNormal">Нет</string>
-    <string name="priorityLow">Не важно</string>
+    <string name="priorityHigh">Важная</string>
+    <string name="priorityNormal">Обычная</string>
+    <string name="priorityLow">Не важная</string>
     <string name="taskDeadline">Сделать до</string>
     <string name="closeBtnDescription">Закрыть</string>
     <string name="deleteBtnDescription">Удалить задачу</string>
@@ -42,4 +42,5 @@
     <string name="changePriorityActionDescription">Изменить важность задачи</string>
     <string name="addTaskActionDescription">Добавить задачу</string>
     <string name="buttonDisabledDescription">Кнопка отключена</string>
+    <string name="todoItemPriorityDescription">Важность задачи</string>
 </resources>
