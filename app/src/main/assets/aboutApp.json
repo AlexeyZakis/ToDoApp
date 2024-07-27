@@ -1,0 +1,155 @@
+{
+  "card": {
+    "log_id": "divScreen",
+    "states": [
+      {
+        "state_id": 0,
+        "div": {
+          "type": "container",
+          "background": [
+            {
+              "color": "#2b2b2b",
+              "type": "solid"
+            }
+          ],
+          "height": {
+            "type": "match_parent"
+          },
+          "items": [
+            {
+              "type": "container",
+              "margins": {
+                "top": 30
+              },
+              "items": [
+                {
+                  "type" : "state",
+                  "id": "iconState",
+                  "default_state_id": "yellowIcon",
+                  "states": [
+                    {
+                      "state_id": "yellowIcon",
+                      "div": {
+                        "type": "image",
+                        "alignment_horizontal": "center",
+                        "image_url": "https://www.shareicon.net/data/512x512/2017/02/07/878404_clipboard_512x512.png",
+                        "margins": {
+                          "top": 10,
+                          "right": 10,
+                          "bottom": 10,
+                          "left": 10
+                        },
+                        "width" : {
+                          "type": "fixed",
+                          "value": 128
+                        },
+                        "actions": [
+                          {
+                            "log_id": "yellowIcon",
+                            "url": "div-action://set_state?state_id=0/iconState/blueIcon"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "state_id": "blueIcon",
+                      "div": {
+                        "type": "image",
+                        "alignment_horizontal": "center",
+                        "image_url": "https://www.shareicon.net/data/512x512/2017/02/07/878410_check_512x512.png",
+                        "margins": {
+                          "top": 10,
+                          "right": 10,
+                          "bottom": 10,
+                          "left": 10
+                        },
+                        "width" : {
+                          "type": "fixed",
+                          "value": 128
+                        },
+                        "actions": [
+                          {
+                            "log_id": "blueIcon",
+                            "url": "div-action://set_state?state_id=0/iconState/yellowIcon"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "margins": {
+                "right": 10,
+                "left": 10
+              },
+              "items": [
+                {
+                  "type": "text",
+                  "text_color": "#FFF",
+                  "font_size": 30,
+                  "font_weight": "bold",
+                  "text": "Todo App",
+                  "margins": {
+                    "left": 20,
+                    "top": 50
+                  }
+                },
+                {
+                  "type": "text",
+                  "text_color": "#FFF",
+                  "margins": {
+                    "top": 20,
+                    "right": 10,
+                    "bottom": 10,
+                    "left": 10
+                  },
+                  "font_size": 20,
+                  "text": "Это приложение, где пользователь может хранить список своих дел.\n\nДанные хранятся локально и на сервере.\n\n"
+                },
+                {
+                  "type": "container",
+                  "margins": {
+                    "top": 10,
+                    "right": 10,
+                    "bottom": 10,
+                    "left": 10
+                  },
+                  "background": [
+                    {
+                      "color": "#3C3C3F",
+                      "type": "solid"
+                    }
+                  ],
+                  "border": {
+                    "corner_radius": 16
+                  },
+                  "items": [
+                    {
+                      "type": "text",
+                      "text_color": "#FFF",
+                      "text": "Назад",
+                      "font_size": 20,
+                      "font_weight": "bold",
+                      "text_alignment_horizontal": "center",
+                      "action": {
+                        "log_id": "back_action",
+                        "url": "my-action://back"
+                      },
+                      "margins": {
+                        "top": 10,
+                        "bottom": 10
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -10,6 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,6 +77,7 @@ fun ListTodoItem(
                 color = taskTextColor,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium,
                 textDecoration = taskTextDecorator,
             )
             if (todoItem.deadlineDate != null && !todoItem.isDone) {
@@ -83,6 +85,7 @@ fun ListTodoItem(
                     text = DateFormat.getDateString(todoItem.deadlineDate),
                     fontSize = 14.sp,
                     color = themeColors.labelTertiary,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         }

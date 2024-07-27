@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -52,6 +53,7 @@ fun ListTodoItemList(
             Text(
                 text = stringResource(R.string.newTaskBtn),
                 color = themeColors.labelTertiary,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onAddNewItemClick() }
@@ -66,7 +68,7 @@ fun ListTodoItemList(
 private fun ListTodoItemListPreview() {
     val data: Items
     runBlocking {
-        data = Items(RuntimeStorage().getList().data?.values?.toList() ?: listOf())
+        data = Items(RuntimeStorage().getList().data?.values?.toList()?.subList(0, 3) ?: listOf())
     }
     AppTheme(theme = MainTheme) {
         ListTodoItemList(
