@@ -32,6 +32,7 @@
                       "div": {
                         "type": "image",
                         "alignment_horizontal": "center",
+                        "accessibilityLabel": "Изменить иконку",
                         "image_url": "https://www.shareicon.net/data/512x512/2017/02/07/878404_clipboard_512x512.png",
                         "margins": {
                           "top": 10,
@@ -56,6 +57,7 @@
                       "div": {
                         "type": "image",
                         "alignment_horizontal": "center",
+                        "accessibilityLabel": "Изменить иконку",
                         "image_url": "https://www.shareicon.net/data/512x512/2017/02/07/878410_check_512x512.png",
                         "margins": {
                           "top": 10,

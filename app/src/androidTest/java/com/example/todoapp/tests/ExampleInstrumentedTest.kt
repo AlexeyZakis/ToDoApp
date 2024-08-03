@@ -1,4 +1,4 @@
-package com.example.todoapp
+package com.example.todoapp.tests
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.todoapp", appContext.packageName)
+        assertEquals("ru.yandex.school.ssmd24.todoapp", appContext.packageName)
     }
 }

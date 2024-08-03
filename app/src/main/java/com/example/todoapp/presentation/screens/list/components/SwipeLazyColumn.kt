@@ -59,10 +59,12 @@ fun <T> SwipeLazyColumn(
                     isEndToStartSwipe = true
                     true
                 }
+
                 SwipeToDismissBoxValue.StartToEnd -> {
                     isStartToEndSwipe = true
                     true
                 }
+
                 else -> {
                     false
                 }
@@ -114,11 +116,13 @@ fun SwipeBackground(
             icon = Icons.Default.Done
             contentAlignment = Alignment.CenterStart
         }
+
         SwipeToDismissBoxValue.EndToStart -> {
             color = themeColors.colorRed
             icon = Icons.Default.Delete
             contentAlignment = Alignment.CenterEnd
         }
+
         SwipeToDismissBoxValue.Settled -> {
             return
         }

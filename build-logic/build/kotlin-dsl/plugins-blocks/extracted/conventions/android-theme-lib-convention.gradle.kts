@@ -1,10 +1,9 @@
 package conventions;                    
 
-           
                    
               
                         
-                                         
+           
 
 plugins {
     id("com.android.library")

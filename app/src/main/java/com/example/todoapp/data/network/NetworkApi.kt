@@ -8,14 +8,20 @@ import com.example.todoapp.data.network.dtos.ResponseDto
 import com.example.todoapp.data.network.models.NetworkResult
 import com.example.todoapp.domain.models.Items
 import com.example.todoapp.domain.models.TodoItem
+import io.ktor.client.HttpClient
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 
 /**
  * Network request API
  **/
-object Network {
+class NetworkApi(
+    val client: HttpClient,
+    val json: Json,
+    val deviceId: String,
+) {
     private var lastKnownRevision = 0
 
     suspend fun getList(): ListDto? {
@@ -27,11 +33,13 @@ object Network {
             is NetworkResult.Success -> {
                 onSuccess("getItemsList", result)
             }
+
             is NetworkResult.Error -> {
                 onError("getItemsList", result)
             }
         }
     }
+
     suspend fun updateList(list: Items): ListDto? {
         updateRevision()
         val body = wrap(
@@ -51,11 +59,13 @@ object Network {
             is NetworkResult.Success -> {
                 onSuccess("updateList", result)
             }
+
             is NetworkResult.Error -> {
                 onError("updateList", result)
             }
         }
     }
+
     suspend fun getItem(id: String): ElementDto? {
         val result = client.safeRequest<ElementDto, ErrorDto>(
             method = HttpMethod.Get,
@@ -65,11 +75,13 @@ object Network {
             is NetworkResult.Success -> {
                 onSuccess("getItem", result)
             }
+
             is NetworkResult.Error -> {
                 onError("getItem", result)
             }
         }
     }
+
     suspend fun addItem(todoItem: TodoItem): ElementDto? {
         updateRevision()
         val body = wrap(
@@ -90,11 +102,13 @@ object Network {
             is NetworkResult.Success -> {
                 onSuccess("addItem", result)
             }
+
             is NetworkResult.Error -> {
                 onError("addItem", result)
             }
         }
     }
+
     suspend fun updateItem(todoItem: TodoItem): ElementDto? {
         updateRevision()
         val body = wrap(
@@ -115,11 +129,13 @@ object Network {
             is NetworkResult.Success -> {
                 onSuccess("updateItem", result)
             }
+
             is NetworkResult.Error -> {
                 onError("updateItem", result)
             }
         }
     }
+
     suspend fun deleteItem(todoItem: TodoItem): ElementDto? {
         updateRevision()
         val result = client.safeRequest<ElementDto, ErrorDto>(
@@ -133,15 +149,18 @@ object Network {
             is NetworkResult.Success -> {
                 onSuccess("deleteItem", result)
             }
+
             is NetworkResult.Error -> {
                 onError("deleteItem", result)
             }
         }
     }
+
     private suspend fun updateRevision() {
         // TODO : Replace if the corresponding method is added
         getList()
     }
+
     // For debug
     suspend fun deleteAll() {
         val result = getList()
@@ -149,27 +168,30 @@ object Network {
             deleteItem(it.toTodoItem())
         }
     }
+
     private fun wrap(wrapper: String, body: String) = buildJsonObject {
         put(wrapper, json.parseToJsonElement(body))
     }
+
     private fun <T : ResponseDto> onSuccess(name: String, result: NetworkResult.Success<out T>): T {
         lastKnownRevision = result.data.revision
         Log.d(
             NetworkConstants.DEBUG,
             "Response $name\n" +
-                "${result.data}\n" +
-                "revision: ${result.data.revision}\n" +
-                "--------------------------------------------------"
+                    "${result.data}\n" +
+                    "revision: ${result.data.revision}\n" +
+                    "--------------------------------------------------"
         )
         return result.data
     }
+
     private fun onError(name: String, result: NetworkResult.Error<out ErrorDto>): Nothing? {
         Log.e(
             NetworkConstants.DEBUG,
             "Response $name\n" +
-                "Error: ${result.message}\n" +
-                "Code: ${result.errorCode}\n" +
-                "--------------------------------------------------"
+                    "Error: ${result.message}\n" +
+                    "Code: ${result.errorCode}\n" +
+                    "--------------------------------------------------"
         )
         return null
     }

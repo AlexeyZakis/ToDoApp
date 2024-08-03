@@ -11,6 +11,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
@@ -21,9 +23,12 @@ import com.example.todoapp.presentation.themes.themeColors
 
 @Composable
 fun EditDeleteBtn(
+    modifier: Modifier = Modifier,
     enabled: Boolean,
     screenAction: (EditScreenAction) -> Unit,
 ) {
+    val deleteBtnDescription = stringResource(id = R.string.deleteBtnDescription)
+    val buttonDisabledDescription = stringResource(id = R.string.buttonDisabledDescription)
     TextButton(
         onClick = {
             screenAction(EditScreenAction.OnTaskDelete)
@@ -33,15 +38,20 @@ fun EditDeleteBtn(
             contentColor = themeColors.colorRed,
             disabledContentColor = themeColors.labelDisable
         ),
+        modifier = modifier
+            .clearAndSetSemantics { this.contentDescription =
+                "$deleteBtnDescription. ${if (!enabled) buttonDisabledDescription else ""}"
+            }
     ) {
         Icon(
             imageVector = Icons.Default.Delete,
-            contentDescription = stringResource(id = R.string.deleteBtnDescription),
+            contentDescription = null,
         )
         Text(
             text = stringResource(id = R.string.delete),
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(start = 12.dp)
+            modifier = Modifier
+                .padding(start = 12.dp)
         )
     }
 }

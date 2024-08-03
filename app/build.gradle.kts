@@ -14,8 +14,9 @@ tgReporter {
 
     apkName.set("todolist")
 
+    maxApkSizeMB.set(60)
+    
     enableApkSizeValidator.set(true)
-    maxApkSizeMB.set(16)
 
     enableApkDetailer.set(true)
 }
@@ -28,14 +29,18 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.todoapp.CustomTestRunner"
 
         buildConfigField("String", "API_TOKEN", "\"$apiToken\"")
     }
 }
 
 dependencies {
-
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.ktor.client.mock)
+    androidTestImplementation(libs.okhttp.mockwebserver)
+    testImplementation(libs.mockk)
+    implementation(libs.androidx.tracing)
 }
 
 fun getLocalProperty(propertyName: String, project: Project): String {

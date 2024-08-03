@@ -20,12 +20,14 @@ class NavigateBackDivActionHandler(private val navigateBack: () -> Unit) : DivAc
             super.handleAction(action, view, resolver)
         }
     }
+
     private fun handleNavigateBackAction(action: Uri): Boolean {
         return when (action.host) {
             "back" -> {
                 navigateBack()
                 true
             }
+
             else -> false
         }
     }

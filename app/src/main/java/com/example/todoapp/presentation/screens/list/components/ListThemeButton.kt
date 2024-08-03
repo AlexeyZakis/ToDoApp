@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.R
 import com.example.todoapp.presentation.themes.themeColors
@@ -17,16 +19,18 @@ fun ListThemeButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
+    val contentDescription = stringResource(id = R.string.changeThemeBtnDescription)
     IconButton(
         colors = IconButtonDefaults.iconButtonColors(
             contentColor = themeColors.colorBlue
         ),
         onClick = { onClick() },
         modifier = modifier
+            .semantics { this.contentDescription = contentDescription }
     ) {
         Icon(
             painter = painterResource(id = R.drawable.baseline_brightness_4_24),
-            contentDescription = stringResource(id = R.string.hideDoneTaskBtnDescription),
+            contentDescription = null,
             modifier = Modifier.padding()
         )
     }

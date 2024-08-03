@@ -30,25 +30,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.data.storage.RuntimeStorage
 import com.example.todoapp.domain.models.Items
-import com.example.todoapp.domain.models.Priority
-import com.example.todoapp.presentation.data.LocalThemeRepository
 import com.example.todoapp.presentation.data.models.ThemeMode
-import com.example.todoapp.presentation.screens.BottomSheetEnum
-import com.example.todoapp.presentation.screens.edit.EditScreenAction
+import com.example.todoapp.presentation.screens.BottomSheet
 import com.example.todoapp.presentation.screens.list.components.ListTitle
 import com.example.todoapp.presentation.screens.list.components.PullToRefreshLazyColumn
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
-import com.example.todoapp.presentation.utils.getPriorityEmoji
 import com.example.todoapp.presentation.utils.getThemeModeEmoji
-import com.example.todoapp.presentation.utils.priorityToRId
 import com.example.todoapp.presentation.utils.themeModeToRId
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -70,20 +66,20 @@ fun ListScreen(
 
     val sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    BottomSheetEnum(
+    BottomSheet(
         sheetState = sheetState,
-        enumValues = ThemeMode.entries.toTypedArray(),
-        enumToStringResId = { themeMode -> themeModeToRId(themeMode) },
-        enumSelected = screenState.themeMode,
-        onEnumSelected = { themeMode ->
+        values = ThemeMode.entries.toTypedArray(),
+        valueToStringResId = { themeMode -> themeModeToRId(themeMode) },
+        selected = screenState.themeMode,
+        onSelect = { themeMode ->
             screenAction(ListScreenAction.OnThemeChange(themeMode)) {}
         },
-        enumMapColors = mapOf(
+        valueColors = mapOf(
             ThemeMode.DARK to themeColors.colorBlue,
             ThemeMode.LIGHT to themeColors.colorGreen,
             ThemeMode.SYSTEM to themeColors.colorGray,
         ),
-        enumMapPrefix = mapOf(
+        valuePrefix = mapOf(
             ThemeMode.DARK to getThemeModeEmoji(ThemeMode.DARK),
             ThemeMode.LIGHT to getThemeModeEmoji(ThemeMode.LIGHT),
             ThemeMode.SYSTEM to getThemeModeEmoji(ThemeMode.SYSTEM),
@@ -133,6 +129,8 @@ fun ListScreen(
                         containerColor = themeColors.colorBlue,
                         contentColor = themeColors.colorWhite,
                         shape = CircleShape,
+                        modifier = Modifier
+                            .testTag("addTodoItemBtn")
                     ) {
                         Icon(
                             Icons.Rounded.Add,

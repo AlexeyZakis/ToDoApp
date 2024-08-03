@@ -17,6 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.R
 import com.example.todoapp.presentation.screens.edit.EditScreenAction
@@ -34,15 +38,49 @@ fun EditDeadline(
 ) {
     var isDeadlineHidden by remember { mutableStateOf(true) }
 
+    val noDeadlineTaskDescription = stringResource(id = R.string.noDeadlineTaskDescription)
+    val withDeadlineTaskDescription = stringResource(id = R.string.withDeadlineTaskDescription)
+
+    val hasDeadlineClickDescription = stringResource(id = R.string.hasDeadlineClickDescription)
+    val hasNotDeadlineClickDescription = stringResource(id = R.string.hasNotDeadlineClickDescription)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = if (hasDeadline) {
-            modifier.clickable {
+            modifier.clickable(
+                onClickLabel =
+                    stringResource(id = R.string.changeDeadlineActionDescription)
+            ) {
                 isDeadlineHidden = false
             }
         } else {
             modifier
         }
+            .clearAndSetSemantics {
+                contentDescription = "${
+                    if (hasDeadline) {
+                        "$withDeadlineTaskDescription ${DateFormat.getDateString(deadlineDate)}"
+                    } else {
+                        noDeadlineTaskDescription
+                    }
+                }."
+                customActions = listOf(
+                    CustomAccessibilityAction(label = if (hasDeadline) {
+                        hasDeadlineClickDescription
+                    } else {
+                        hasNotDeadlineClickDescription
+                    }
+                    ) {
+                        screenAction(EditScreenAction.OnDeadlineExistenceChange(!hasDeadline))
+                        if (!hasDeadline) {
+                            isDeadlineHidden = false
+                        } else {
+                            screenAction(EditScreenAction.OnDeadlineExistenceChange(false))
+                        }
+                        true
+                    },
+                )
+            }
     ) {
         Column {
             Text(

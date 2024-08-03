@@ -1,8 +1,5 @@
 package com.example.todoapp.presentation.screens
 
-import android.widget.Toast
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,7 +16,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,20 +33,19 @@ import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
 import com.example.todoapp.presentation.utils.getPriorityEmoji
 import com.example.todoapp.presentation.utils.priorityToRId
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun <T : Enum<T>> BottomSheetEnum(
+fun <T> BottomSheet(
     sheetState: ModalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
-    enumValues: Array<T>,
-    enumToStringResId: (T) -> Int,
-    onEnumSelected: (T) -> Unit,
-    enumSelected: T,
-    enumMapColors: Map<T, Color> = mapOf(),
-    enumMapPrefix: Map<T, String> = mapOf(),
+    values: Array<T>,
+    valueToStringResId: (T) -> Int,
+    onSelect: (T) -> Unit,
+    selected: T,
+    valueColors: Map<T, Color> = mapOf(),
+    valuePrefix: Map<T, String> = mapOf(),
     content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -65,22 +59,21 @@ fun <T : Enum<T>> BottomSheetEnum(
                     .background(themeColors.backPrimary)
                     .padding(16.dp)
             ) {
-                enumValues.forEach { enumValue ->
-                    val background = if (enumValue == enumSelected) {
+                values.forEach { enumValue ->
+                    val background = if (enumValue == selected) {
                         themeColors.backSecondary
                     } else {
                         themeColors.backPrimary
                     }
                     Text(
-                        color = enumMapColors[enumValue] ?:
-                            themeColors.labelPrimary,
+                        color = valueColors[enumValue] ?: themeColors.labelPrimary,
                         style = MaterialTheme.typography.titleLarge,
-                        text = (enumMapPrefix[enumValue] ?: "") +
-                            stringResource(id = enumToStringResId(enumValue)),
+                        text = (valuePrefix[enumValue] ?: "") +
+                                stringResource(id = valueToStringResId(enumValue)),
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                onEnumSelected(enumValue)
+                                onSelect(enumValue)
                                 scope.launch {
                                     sheetState.hide()
                                 }
@@ -97,28 +90,30 @@ fun <T : Enum<T>> BottomSheetEnum(
 @OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
-private fun BottomSheetEnumPreview() {
+private fun BottomSheetPreview() {
     AppTheme(theme = MainTheme) {
         val scope = rememberCoroutineScope()
         val sheetState: ModalBottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+            rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
         var text by remember { mutableStateOf(Priority.NORMAL.name) }
         var selectedPriority by remember { mutableStateOf(Priority.NORMAL) }
 
-        BottomSheetEnum(
+        BottomSheet(
             sheetState = sheetState,
-            enumValues = Priority.entries.toTypedArray(),
-            enumToStringResId = { priority -> priorityToRId(priority) },
-            enumSelected = selectedPriority,
-            onEnumSelected = { priority -> run {
-                selectedPriority = priority
-                text = priority.name
-            } },
-            enumMapColors = mapOf(
+            values = Priority.entries.toTypedArray(),
+            valueToStringResId = { priority -> priorityToRId(priority) },
+            selected = selectedPriority,
+            onSelect = { priority ->
+                run {
+                    selectedPriority = priority
+                    text = priority.name
+                }
+            },
+            valueColors = mapOf(
                 Priority.HIGH to themeColors.colorRed
             ),
-            enumMapPrefix = mapOf(
+            valuePrefix = mapOf(
                 Priority.LOW to getPriorityEmoji(Priority.LOW),
                 Priority.HIGH to getPriorityEmoji(Priority.HIGH),
             )

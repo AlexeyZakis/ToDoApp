@@ -3,14 +3,7 @@ package conventions;
                    
                         
                                                                    
-                                                                                              
-                                                                                        
-                                                                                   
-                                                                         
-                                                                                       
            
-                                      
-                                         
 
 plugins {
     id("com.android.application")

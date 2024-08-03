@@ -8,7 +8,6 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
@@ -55,9 +54,9 @@ abstract class ValidateApkSizeTask @Inject constructor(
                 val passed = apkSize <= maxApkSize
                 validationPassed.get().asFile.writeText(passed.toString())
                 val message = "Apk name: ${file.name}\n" +
-                    "Size: $apkSize MB\n" +
-                    "Max apk size: $maxApkSize MB\n" +
-                    "Passed: $passed"
+                        "Size: $apkSize MB\n" +
+                        "Max apk size: $maxApkSize MB\n" +
+                        "Passed: $passed"
                 println(message)
                 if (!passed) {
                     runBlocking {
@@ -69,8 +68,7 @@ abstract class ValidateApkSizeTask @Inject constructor(
                             println("Status = $status")
                         }
                     }
-                }
-                else {
+                } else {
                     apkSizeFile.get().asFile.writeText(apkSize.toString())
                 }
             }

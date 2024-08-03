@@ -5,16 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todoapp.R
 import com.example.todoapp.domain.models.Priority
-import com.example.todoapp.presentation.screens.edit.EditScreenAction
 import com.example.todoapp.presentation.themes.AppTheme
 import com.example.todoapp.presentation.themes.mainTheme.MainTheme
 import com.example.todoapp.presentation.themes.themeColors
@@ -31,7 +27,10 @@ fun EditPriority(
 
     Column(
         modifier = modifier
-            .clickable { onClick() }
+            .clickable(
+                onClickLabel =
+                stringResource(id = R.string.changePriorityActionDescription)
+            ) { onClick() }
     ) {
         val priorityText = getPriorityEmoji(priority) +
             stringResource(id = priorityToRId(priority))

@@ -57,12 +57,12 @@ class ListViewModel @Inject constructor(
         state.copy(
             todoItems = Items(
                 (
-                    if (hideDoneTask) {
-                        items.values.filter { !it.isDone }
-                    } else {
-                        items.values
-                    }
-                ).toList()
+                        if (hideDoneTask) {
+                            items.values.filter { !it.isDone }
+                        } else {
+                            items.values
+                        }
+                        ).toList()
             ),
             doneTaskCounter = getNumberOfDoneTaskUseCase(),
             hideDoneTask = hideDoneTask,
@@ -111,9 +111,11 @@ class ListViewModel @Inject constructor(
 
     private fun changeTodoItemCompletion(todoItem: TodoItem) {
         viewModelScope.launch {
-            val result = editTodoItemUseCase(todoItem.copy(
-                modificationDate = System.currentTimeMillis(),
-            ))
+            val result = editTodoItemUseCase(
+                todoItem.copy(
+                    modificationDate = System.currentTimeMillis(),
+                )
+            )
             updateSnackBarData(
                 result = result,
                 action = ListScreenAction.OnTodoItemCompletionChange(todoItem),

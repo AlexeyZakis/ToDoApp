@@ -28,8 +28,7 @@ object SyncHandler {
                             "localExtraDataHandle networkStorage addItem error"
                         )
                         return true
-                    }
-                    else {
+                    } else {
                         Log.i(
                             RepositoryConstants.DEBUG,
                             "localExtraDataHandle networkStorage addItem success"
@@ -43,8 +42,7 @@ object SyncHandler {
                         "localExtraDataHandle localStorage deleteItem error"
                     )
                     return true
-                }
-                else {
+                } else {
                     Log.i(
                         RepositoryConstants.DEBUG,
                         "localExtraDataHandle localStorage deleteItem success"
@@ -94,8 +92,7 @@ object SyncHandler {
                             "serverExtraDataHandle success"
                         )
                         return true
-                    }
-                    else {
+                    } else {
                         Log.i(
                             RepositoryConstants.DEBUG,
                             "serverExtraDataHandle error"
@@ -109,8 +106,7 @@ object SyncHandler {
                         "serverExtraDataHandle localStorage addItem error"
                     )
                     return true
-                }
-                else {
+                } else {
                     Log.i(
                         RepositoryConstants.DEBUG,
                         "serverExtraDataHandle localStorage addItem success"
@@ -154,8 +150,7 @@ object SyncHandler {
                             "mutualDataHandle localStorage updateItem error"
                         )
                         return true
-                    }
-                    else {
+                    } else {
                         Log.i(
                             RepositoryConstants.DEBUG,
                             "mutualDataHandle localStorage updateItem success"
@@ -174,8 +169,7 @@ object SyncHandler {
                             "mutualDataHandle networkStorage updateItem error"
                         )
                         return true
-                    }
-                    else {
+                    } else {
                         Log.i(
                             RepositoryConstants.DEBUG,
                             "mutualDataHandle networkStorage updateItem success"
